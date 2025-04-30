@@ -88,6 +88,21 @@
   opacity: 1;
   visibility: visible;
 }
+@media screen and (min-width: 990px) {
+  #Details-HeaderMenu-2:hover > .header__submenu {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  #Details-HeaderMenu-2 summary::after {
+    content: '';
+  }
+
+  #Details-HeaderMenu-2[open] > summary {
+    pointer-events: none;
+  }
+}
 
 
   @media screen and (min-width: 750px) {
@@ -679,18 +694,15 @@
 }
 {% endschema %}
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  const menuItem = document.querySelector('#Details-HeaderMenu-2');
+  document.addEventListener("DOMContentLoaded", function () {
+    const menuItem = document.getElementById("Details-HeaderMenu-2");
 
-  if (menuItem) {
-    menuItem.addEventListener('mouseenter', function () {
-      menuItem.classList.add('open');
-    });
+    if (window.innerWidth >= 990 && menuItem) {
+      const summary = menuItem.querySelector("summary");
 
-    menuItem.addEventListener('mouseleave', function () {
-      menuItem.classList.remove('open');
-    });
-  }
-});
-
+      summary.addEventListener("click", function (e) {
+        e.preventDefault(); // prevent toggle
+      });
+    }
+  });
 </script>
