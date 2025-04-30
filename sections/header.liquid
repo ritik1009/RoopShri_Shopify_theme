@@ -70,7 +70,25 @@
     line-height: calc(1 + 0.8 / var(--font-body-scale));
   }
 
-  
+  #Details-HeaderMenu-2 .header__submenu {
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  z-index: 999;
+  min-width: 200px;
+}
+
+#Details-HeaderMenu-2.open .header__submenu {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
 
   @media screen and (min-width: 750px) {
     .list-menu__item--link {
