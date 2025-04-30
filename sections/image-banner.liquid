@@ -119,9 +119,8 @@ class="banner banner--content-align-{{ section.settings.desktop_content_alignmen
   <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient">
     {%- for block in section.blocks -%}
       {%- case block.type -%}
-      {%- if section.settings.subheading != blank -%}
+      {%- when 'subheading' -%}
   <h4 class="subheading">{{ section.settings.subheading }}</h4>
-{%- endif -%}
         {%- when 'heading' -%}
           <h2
             class="banner__heading inline-richtext {{ block.settings.heading_size }}"
@@ -387,6 +386,7 @@ a.button:after{
     "name": "t:sections.image-banner.blocks.heading.name",
     "limit": 1,
     "settings": [
+      
       {
         "type": "inline_richtext",
         "id": "heading",
@@ -512,6 +512,7 @@ a.button:after{
   {
     "name": "t:sections.image-banner.presets.name",
     "blocks": [
+     
       {
         "type": "heading"
       },
