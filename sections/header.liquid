@@ -694,3 +694,15 @@
   ]
 }
 {% endschema %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const drawerToggle = document.querySelector(".menu-toggle"); // Replace with actual toggle button class
+    const drawerMenu = document.querySelector(".menu-drawer-container");
+
+    if (drawerToggle && drawerMenu) {
+      drawerToggle.addEventListener("click", function () {
+        drawerMenu.classList.toggle("active"); // Add or remove 'active' to open/close menu
+      });
+    }
+  });
+</script>
