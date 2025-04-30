@@ -119,7 +119,7 @@ class="banner banner--content-align-{{ section.settings.desktop_content_alignmen
   <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient">
     {%- for block in section.blocks -%}
       {%- case block.type -%}
-         {%- if section.settings.subheading != blank -%}
+      {%- if section.settings.subheading != blank -%}
   <h4 class="subheading">{{ section.settings.subheading }}</h4>
 {%- endif -%}
         {%- when 'heading' -%}
