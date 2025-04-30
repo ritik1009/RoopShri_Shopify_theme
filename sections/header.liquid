@@ -485,22 +485,6 @@
     "url": {{ request.origin | append: page.url | json }}
   }
 </script>
-<script>
-  let items = document.querySelector(".header__inline-menu").querySelectorAll("details");
-  console.log(items);
-  items.forEach(item => {
-    item.addEventListener("mouseover", () => {
-      item.setAttribute("open", true);
-      item.querySelector("ul").addEventListener("mouseleave", () => {
-        item.removeAttribute("open");
-      });
-    });
-
-    item.addEventListener("mouseleave", () => {
-      item.removeAttribute("open");
-    });
-  });
-</script>
 
 {%- if request.page_type == 'index' -%}
   {% assign potential_action_target = request.origin | append: routes.search_url | append: '?q={search_term_string}' %}
@@ -519,6 +503,22 @@
   </script>
 {%- endif -%}
 
+  <script>
+  let items = document.querySelector(".header__inline-menu").querySelectorAll("details");
+  console.log(items);
+  items.forEach(item => {
+    item.addEventListener("mouseover", () => {
+      item.setAttribute("open", true);
+      item.querySelector("ul").addEventListener("mouseleave", () => {
+        item.removeAttribute("open");
+      });
+    });
+
+    item.addEventListener("mouseleave", () => {
+      item.removeAttribute("open");
+    });
+  });
+</script>
 {% schema %}
 {
   "name": "t:sections.header.name",
