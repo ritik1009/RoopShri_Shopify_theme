@@ -92,40 +92,16 @@
     {%- endfor -%}
   </ul>
 </nav>
-<style>
-header-menu .menu-parent {
-  position: relative;
-}
+<script>
 
-header-menu .submenu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: white;
-  min-width: 200px;
-  z-index: 999;
-  padding: 10px 0;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
+  const menu = document.querySelector('#Details-HeaderMenu-2');
 
-header-menu .submenu li {
-  position: relative;
-}
+menu.addEventListener('mouseenter', () => {
+  menu.classList.add('open');
+});
 
-eader-menu .submenu li::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -10px;
-  right: -10px;
-  background: transparent;
-  z-index: -1;
-}
+menu.addEventListener('mouseleave', () => {
+  menu.classList.remove('open');
+});
 
-/* Show submenu on hover */
-header-menu .menu-parent:hover .submenu {
-  display: block;
-}
-</style>
+</script>
