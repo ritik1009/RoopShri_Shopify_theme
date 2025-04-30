@@ -679,14 +679,18 @@
 }
 {% endschema %}
 <script>
-const menu = document.querySelector('#Details-HeaderMenu-2');
+document.addEventListener('DOMContentLoaded', function () {
+  const menuItem = document.querySelector('#Details-HeaderMenu-2');
 
-menu.addEventListener('mouseenter', () => {
-  menu.classList.add('open');
-});
+  if (menuItem) {
+    menuItem.addEventListener('mouseenter', function () {
+      menuItem.classList.add('open');
+    });
 
-menu.addEventListener('mouseleave', () => {
-  menu.classList.remove('open');
+    menuItem.addEventListener('mouseleave', function () {
+      menuItem.classList.remove('open');
+    });
+  }
 });
 
 </script>
