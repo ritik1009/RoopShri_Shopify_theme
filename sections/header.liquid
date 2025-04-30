@@ -67,67 +67,7 @@
     padding-top: 1rem;
     line-height: calc(1 + 0.8 / var(--font-body-scale));
   }
-/* Make details open on hover */
-header-menu details {
-  position: relative;
-}
 
-header-menu details[open] > summary::after {
-  /* Optional: Rotate the caret icon when open */
-  transform: rotate(180deg);
-}
-
-header-menu details > summary {
-  cursor: pointer;
-}
-
-header-menu details:hover > summary,
-header-menu details:hover[open] > summary {
-  /* Force open when hovering */
-  pointer-events: none; /* prevent clicking the summary */
-}
-
-header-menu details:hover {
-  /* Open details when hovering */
-  open: open;
-}
-
-header-menu details:hover summary + ul,
-header-menu details[open] summary + ul {
-  display: block;
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Hide submenu initially */
-header-menu details summary + ul {
-  display: none;
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white; /* Adjust background if needed */
-  min-width: 200px; /* Adjust width */
-  z-index: 99;
-  padding: 10px 0;
-}
-
-/* Add ::before pseudo-element to li for better hover detection */
-header-menu details summary + ul li {
-  position: relative;
-}
-
-header-menu details summary + ul li::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -10px;
-  right: -10px;
-  bottom: 0;
-  background: transparent;
-  z-index: -1;
-}
 
   @media screen and (min-width: 750px) {
     .list-menu__item--link {
