@@ -31,7 +31,7 @@
                 tabindex="-1"
               >
                 <ul
-                  class="mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}"
+                  class="mega-menu__list {% if link.levels == 1 %} mega-menu__list--condensed{% endif %}"
                   role="list"
                 >
                   {%- for childlink in link.links -%}
@@ -39,7 +39,10 @@
                       <a
                         id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
                         href="{{ childlink.url }}"
-                        class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"
+                        data-product-id="product-{{ forloop.index0 }}"
+                        onmouseover="showProduct('{{link.handle }}-{{ childlink.handle }}')"
+                        class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}
+                        {% if forloop.first %} HeaderMenu-hover {% endif %}"
                         {% if childlink.current %}
                           aria-current="page"
                         {% endif %}
@@ -67,6 +70,24 @@
                     </li>
                   {%- endfor -%}
                 </ul>
+                <div class="mega-menu__products">
+                  {% for link in link.links %}
+                    <div
+                      class="mega-menu__product"
+                      id="collection-{{ link.handle }}"
+                      style="display:{% if forloop.first %}block{% else %}none{% endif %}"
+                    >
+                      <h2 class="mega-menu__product_title">{{ link.title }}</h2>
+                      <div class="mega-menu__product_container">
+                        {% for product in link.object.products %}
+                          {% render 'card-product',
+                            card_product: product,
+                          %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
               </div>
             </details>
           </header-menu>
@@ -82,7 +103,7 @@
             <span
               {%- if link.current %}
                 class="header__active-menu-item"
-              {% endif %}
+              {% endif %} 
             >
               {{- link.title | escape -}}
             </span>
@@ -92,3 +113,17 @@
     {%- endfor -%}
   </ul>
 </nav>
+
+<script>
+  function showProduct(index) {
+    document.querySelectorAll(".mega-menu__link").forEach((el,i)=>{
+      el.classList.remove('HeaderMenu-hover');
+    });
+      
+    document.querySelectorAll('.mega-menu__product').forEach((el, i) => {
+      el.style.display = el.id === index ? 'block' : 'none';
+    });
+
+    document.querySelector(`#HeaderMenu-${index}`).classList.add('HeaderMenu-hover');
+  }
+</script>

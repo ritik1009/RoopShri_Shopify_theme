@@ -6,7 +6,7 @@
   background-color: rgb(var(--color-background));
   border-left: 0;
   border-radius: 0;
-  border-right: 0;
+  border-right: 0;                     
   left: 0;
   overflow-y: auto;
   padding-bottom: 3rem;
@@ -14,6 +14,28 @@
   position: absolute;
   right: 0;
   top: 100%;
+  display: flex;
+  gap:1rem;
+  height:50vh;
+  padding:2rem 10rem;
+}
+
+.HeaderMenu-hover{
+  text-decoration: underline !important;
+}
+
+.mega-menu__products{
+  width:75%;
+}
+
+.mega-menu__product_title{
+  margin:0;
+  padding-bottom:1rem;
+}
+
+.mega-menu__product_container{
+  display: flex;
+  gap:1rem;
 }
 
 .shopify-section-header-sticky .mega-menu__content {
@@ -31,7 +53,8 @@
 
 .mega-menu[open] .mega-menu__content {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(-2.5rem);
+  z-index: 9999;
 }
 
 .mega-menu__list {
@@ -39,6 +62,7 @@
   gap: 1.8rem 4rem;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   list-style: none;
+  width:20%;
 }
 
 .mega-menu__link {

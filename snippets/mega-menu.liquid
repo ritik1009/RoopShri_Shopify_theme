@@ -1,0 +1,88 @@
+<section class="custom-mega-menu">
+  <div class="mega-menu__wrapper">
+    <div class="mega-menu__collections">
+      {% for collection in collections %}
+        <div 
+          class="mega-menu__collection" 
+          data-product-id="product-{{ forloop.index0 }}"
+          onmouseover="showProduct({{ forloop.index0 }})"
+        >
+          {{ collection.title }}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="mega-menu__products">
+      {% for collection in collections %}
+        {% assign product = collection.products.first %}
+        {% if product %}
+          <div 
+            class="mega-menu__product" 
+            id="product-{{ forloop.index0 }}" 
+            style="{% if forloop.first == false %}display:none;{% endif %}"
+          >
+            <img src="{{ product.featured_image | image_url: width: 300 }}" alt="{{ product.title }}">
+            <p>{{ product.title }}</p>
+            <p>{{ product.price | money }}</p>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+.mega-menu {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+.mega-menu__wrapper {
+  display: flex;
+  max-width: 1000px;
+  width: 100%;
+}
+.mega-menu__collections {
+  flex: 1;
+  border-right: 1px solid #ccc;
+}
+.mega-menu__collection {
+  padding: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.mega-menu__collection:hover {
+  background-color: #f3f3f3;
+}
+.mega-menu__products {
+  flex: 2;
+  padding: 15px;
+}
+.mega-menu__product img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+}
+.custom-mega-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100vw;
+  background: white;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.header__menu-item:hover .custom-mega-menu {
+  display: block;
+}
+
+</style>
+
+<script>
+  function showProduct(index) {
+    document.querySelectorAll('.mega-menu__product').forEach((el, i) => {
+      el.style.display = (i === index) ? 'block' : 'none';
+    });
+  }
+</script>
