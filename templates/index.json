@@ -109,12 +109,19 @@
           "settings": {
             "collection": "jewelry-sets"
           }
+        },
+        "featured_collection_qz4Fqn": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "rings"
+          }
         }
       },
       "block_order": [
         "featured_collection_hePRJz",
         "featured_collection_798DdW",
-        "featured_collection_EcHenU"
+        "featured_collection_EcHenU",
+        "featured_collection_qz4Fqn"
       ],
       "custom_css": [
         ".card--standard .card__inner,.card .card__inner .card__media {border-radius: 100% !important;}",
