@@ -178,33 +178,21 @@
         "heading_4iRijV": {
           "type": "heading",
           "settings": {
-            "heading": "Image banner",
+            "heading": "Jewelry as Unique as Your Story",
             "heading_size": "h1"
           }
         },
         "text_NcJTH4": {
           "type": "text",
           "settings": {
-            "text": "Give customers details about the banner image(s) or content on the template.",
+            "text": "It implies that the jewelry offered is not mass-produced, but rather tailored to individual preferences or experiences.",
             "text_style": "body"
-          }
-        },
-        "buttons_cz9ejM": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Button label",
-            "button_link_1": "",
-            "button_style_secondary_1": false,
-            "button_label_2": "Button label",
-            "button_link_2": "",
-            "button_style_secondary_2": false
           }
         }
       },
       "block_order": [
         "heading_4iRijV",
-        "text_NcJTH4",
-        "buttons_cz9ejM"
+        "text_NcJTH4"
       ],
       "name": "t:sections.image-banner.presets.name",
       "settings": {
