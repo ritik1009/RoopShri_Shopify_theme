@@ -196,7 +196,7 @@
       ],
       "custom_css": [
         ".banner__box.content-container.content-container--full-width-mobile.color-scheme-2a6a29dd-d14f-4284-ac62-58bac18dfde2.gradient {color: #ffffff; max-width: 680px; padding: 0; margin-left: 53%;}",
-        ".banner__box.content-container.content-container--full-width-mobile.color-scheme-2a6a29dd-d14f-4284-ac62-58bac18dfde2.gradient h2{color:#ffffff;}"
+        ".banner__box.content-container.content-container--full-width-mobile.color-scheme-2a6a29dd-d14f-4284-ac62-58bac18dfde2.gradient h2 {color: #ffffff;}"
       ],
       "name": "t:sections.image-banner.presets.name",
       "settings": {
@@ -210,7 +210,7 @@
         "color_scheme": "scheme-2a6a29dd-d14f-4284-ac62-58bac18dfde2",
         "stack_images_on_mobile": true,
         "mobile_content_alignment": "center",
-        "show_text_below": true
+        "show_text_below": false
       }
     }
   },
