@@ -74,7 +74,8 @@
       ],
       "custom_css": [
         ".slideshow__controls.slider-buttons.slideshow__controls--border-radius-mobile {position: absolute; bottom: 0; transform: translate(-50%, -50%); left: 50%; border: none;}",
-        ".slider-button {display: none !important;}"
+        ".slider-button {display: none !important;}",
+        "@media only screen and (max-width: 600px) {.slideshow__media.banner__media.media img {object-position: right; }}"
       ],
       "name": "t:sections.slideshow.presets.name",
       "settings": {
