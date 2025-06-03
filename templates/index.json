@@ -135,6 +135,9 @@
     },
     "featured_collection": {
       "type": "featured-collection",
+      "custom_css": [
+        ".card__inner.gradient{height:100%;}"
+      ],
       "settings": {
         "collection": "frontpage",
         "products_to_show": 8,
