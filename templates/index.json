@@ -47,11 +47,30 @@
             "text_alignment_mobile": "center",
             "color_scheme": "scheme-d4fe1ec5-e1d1-46a8-91f0-22785deedae3"
           }
+        },
+        "slide_7a3UaP": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/main-banner-2.webp",
+            "image_overlay_opacity": 0,
+            "heading": "Perfect for Every Occasion",
+            "heading_size": "h1",
+            "subheading": "coordinate with other pieces from the collection for a classic look.",
+            "button_label": "Shop All",
+            "link": "",
+            "button_style_secondary": false,
+            "show_text_box": true,
+            "box_align": "middle-center",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": "scheme-d4fe1ec5-e1d1-46a8-91f0-22785deedae3"
+          }
         }
       },
       "block_order": [
         "slide_hn6w9d",
-        "slide_XGDbKR"
+        "slide_XGDbKR",
+        "slide_7a3UaP"
       ],
       "name": "t:sections.slideshow.presets.name",
       "settings": {
@@ -60,7 +79,7 @@
         "slider_visual": "counter",
         "auto_rotate": false,
         "change_slides_speed": 5,
-        "image_behavior": "ambient",
+        "image_behavior": "none",
         "show_text_below": true,
         "accessibility_info": "Slideshow about our brand"
       }
