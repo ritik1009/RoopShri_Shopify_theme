@@ -115,6 +115,9 @@
         "featured_collection_798DdW",
         "featured_collection_EcHenU"
       ],
+      "custom_css": [
+        ".card--standard .card__inner{border-radius: 100% !important;}"
+      ],
       "name": "t:sections.collection-list.presets.name",
       "settings": {
         "title": "Collections",
