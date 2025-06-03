@@ -72,6 +72,9 @@
         "slide_XGDbKR",
         "slide_7a3UaP"
       ],
+      "custom_css": [
+        ".slideshow__controls.slider-buttons.slideshow__controls--border-radius-mobile {position: absolute; bottom: 0; transform: translate(-50%, -50%); left: 50%; border: none;}"
+      ],
       "name": "t:sections.slideshow.presets.name",
       "settings": {
         "layout": "full_bleed",
