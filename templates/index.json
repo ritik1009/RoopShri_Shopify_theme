@@ -9,6 +9,62 @@
  */
 {
   "sections": {
+    "slideshow_YeD8yj": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_hn6w9d": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/main-banner-4.webp",
+            "image_overlay_opacity": 0,
+            "heading": "Perfect for Every Occasion",
+            "heading_size": "h1",
+            "subheading": "coordinate with other pieces from the collection for a classic look.",
+            "button_label": "Shop All",
+            "link": "",
+            "button_style_secondary": false,
+            "show_text_box": true,
+            "box_align": "middle-left",
+            "text_alignment": "left",
+            "text_alignment_mobile": "left",
+            "color_scheme": "scheme-d4fe1ec5-e1d1-46a8-91f0-22785deedae3"
+          }
+        },
+        "slide_XGDbKR": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/main-banner-1.webp",
+            "image_overlay_opacity": 0,
+            "heading": "Perfect for Every Occasion",
+            "heading_size": "h1",
+            "subheading": "coordinate with other pieces from the collection for a classic look.",
+            "button_label": "Shop All",
+            "link": "",
+            "button_style_secondary": false,
+            "show_text_box": true,
+            "box_align": "middle-left",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": "scheme-d4fe1ec5-e1d1-46a8-91f0-22785deedae3"
+          }
+        }
+      },
+      "block_order": [
+        "slide_hn6w9d",
+        "slide_XGDbKR"
+      ],
+      "name": "t:sections.slideshow.presets.name",
+      "settings": {
+        "layout": "full_bleed",
+        "slide_height": "medium",
+        "slider_visual": "counter",
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "image_behavior": "ambient",
+        "show_text_below": true,
+        "accessibility_info": "Slideshow about our brand"
+      }
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -45,7 +101,6 @@
       ],
       "settings": {
         "image": "shopify://shop_images/main-banner-4.jpg",
-        "subheading": "New Arrivals",
         "image_overlay_opacity": 0,
         "image_height": "large",
         "image_behavior": "none",
@@ -88,6 +143,7 @@
     }
   },
   "order": [
+    "slideshow_YeD8yj",
     "image_banner",
     "featured_collection"
   ]
