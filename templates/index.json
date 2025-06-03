@@ -116,7 +116,8 @@
         "featured_collection_EcHenU"
       ],
       "custom_css": [
-        ".card--standard .card__inner, .card .card__inner .card__media {border-radius: 100% !important;}"
+        ".card--standard .card__inner,.card .card__inner .card__media {border-radius: 100% !important;}",
+        ".card__heading .full-unstyled-link {text-align: center;}"
       ],
       "name": "t:sections.collection-list.presets.name",
       "settings": {
