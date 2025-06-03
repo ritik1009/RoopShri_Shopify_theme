@@ -88,10 +88,51 @@
         "accessibility_info": "Slideshow about our brand"
       }
     },
+    "collection_list_PhFXde": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_hePRJz": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "bangles"
+          }
+        },
+        "featured_collection_798DdW": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "fancy-earring"
+          }
+        },
+        "featured_collection_EcHenU": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "jewelry-sets"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_hePRJz",
+        "featured_collection_798DdW",
+        "featured_collection_EcHenU"
+      ],
+      "name": "t:sections.collection-list.presets.name",
+      "settings": {
+        "title": "Collections",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "color_scheme": "",
+        "show_view_all": false,
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "collection": "all",
+        "collection": "bangles",
         "products_to_show": 8,
         "title": "Featured products",
         "heading_size": "h2",
@@ -119,6 +160,7 @@
   },
   "order": [
     "slideshow_YeD8yj",
+    "collection_list_PhFXde",
     "featured_collection"
   ]
 }
