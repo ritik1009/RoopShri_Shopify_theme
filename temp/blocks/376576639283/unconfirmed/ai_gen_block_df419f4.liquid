@@ -1,6 +1,400 @@
+{% doc %}
+  @prompt
+    A heading with an animated glowing effect, can you add an infinite animation, add an option to add multiple text then change between text with animation of single alphabet changing
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-glowing-heading-{{ ai_gen_id }} {
+    text-align: {{ block.settings.text_alignment }};
+    padding: {{ block.settings.padding }}px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-glowing-heading-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.font_size }}px;
+    font-weight: {{ block.settings.font_weight }};
+    color: {{ block.settings.text_color }};
+    margin: 0;
+    display: inline-block;
+    text-shadow: 
+      0 0 {{ block.settings.glow_intensity }}px {{ block.settings.glow_color }},
+      0 0 {{ block.settings.glow_intensity | times: 2 }}px {{ block.settings.glow_color }},
+      0 0 {{ block.settings.glow_intensity | times: 3 }}px {{ block.settings.glow_color }};
+    animation: ai-glow-pulse-{{ ai_gen_id }} {{ block.settings.animation_speed }}s ease-in-out infinite;
+    min-height: 1.2em;
+  }
+
+  .ai-glowing-heading-char-{{ ai_gen_id }} {
+    display: inline-block;
+    transition: all 0.3s ease;
+  }
+
+  .ai-glowing-heading-char-{{ ai_gen_id }}.changing {
+    color: {{ block.settings.changing_color }};
+    text-shadow: 
+      0 0 {{ block.settings.glow_intensity | times: 1.5 }}px {{ block.settings.changing_color }},
+      0 0 {{ block.settings.glow_intensity | times: 3 }}px {{ block.settings.changing_color }};
+    transform: scale(1.1);
+  }
+
+  @keyframes ai-glow-pulse-{{ ai_gen_id }} {
+    0%, 100% {
+      text-shadow: 
+        0 0 {{ block.settings.glow_intensity }}px {{ block.settings.glow_color }},
+        0 0 {{ block.settings.glow_intensity | times: 2 }}px {{ block.settings.glow_color }},
+        0 0 {{ block.settings.glow_intensity | times: 3 }}px {{ block.settings.glow_color }};
+      opacity: 0.8;
+    }
+    25% {
+      text-shadow: 
+        0 0 {{ block.settings.glow_intensity | times: 1.5 }}px {{ block.settings.glow_color }},
+        0 0 {{ block.settings.glow_intensity | times: 3 }}px {{ block.settings.glow_color }},
+        0 0 {{ block.settings.glow_intensity | times: 4.5 }}px {{ block.settings.glow_color }};
+      opacity: 1;
+    }
+    50% {
+      text-shadow: 
+        0 0 {{ block.settings.glow_intensity | times: 2 }}px {{ block.settings.glow_color }},
+        0 0 {{ block.settings.glow_intensity | times: 4 }}px {{ block.settings.glow_color }},
+        0 0 {{ block.settings.glow_intensity | times: 6 }}px {{ block.settings.glow_color }};
+      opacity: 1;
+    }
+    75% {
+      text-shadow: 
+        0 0 {{ block.settings.glow_intensity | times: 1.5 }}px {{ block.settings.glow_color }},
+        0 0 {{ block.settings.glow_intensity | times: 3 }}px {{ block.settings.glow_color }},
+        0 0 {{ block.settings.glow_intensity | times: 4.5 }}px {{ block.settings.glow_color }};
+      opacity: 0.9;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-glowing-heading-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<animated-glowing-heading-{{ ai_gen_id }}
+  class="ai-glowing-heading-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+  data-texts='[
+    {% if block.settings.text_1 != blank %}"{{ block.settings.text_1 | escape }}"{% endif %}
+    {% if block.settings.text_2 != blank %},{{ block.settings.text_2 | escape | json }}{% endif %}
+    {% if block.settings.text_3 != blank %},{{ block.settings.text_3 | escape | json }}{% endif %}
+    {% if block.settings.text_4 != blank %},{{ block.settings.text_4 | escape | json }}{% endif %}
+    {% if block.settings.text_5 != blank %},{{ block.settings.text_5 | escape | json }}{% endif %}
+  ]'
+  data-change-speed="{{ block.settings.text_change_speed }}"
+  data-char-speed="{{ block.settings.char_change_speed }}"
+><h2 class="ai-glowing-heading-text-{{ ai_gen_id }}" id="ai-heading-{{ ai_gen_id }}">
+    {% if block.settings.text_1 != blank %}
+      {{ block.settings.text_1 }}
+    {% else %}
+      Add your heading text
+    {% endif %}
+  </h2>
+</animated-glowing-heading-{{ ai_gen_id }}>
+
+<script>
+(function() {
+  class AnimatedGlowingHeading{{ ai_gen_id }} extends HTMLElement {
+    constructor() {
+      super();
+      this.texts = [];
+      this.currentTextIndex = 0;
+      this.isAnimating = false;
+      this.changeSpeed = 3000;
+      this.charSpeed = 100;
+    }
+
+    connectedCallback() {
+      this.parseData();
+      this.headingElement = this.querySelector('#ai-heading-{{ ai_gen_id }}');
+      if (this.texts.length > 1) {
+        this.startAnimation();
+      }
+    }
+
+    parseData() {
+      try {
+        const textsData = this.getAttribute('data-texts');
+        this.texts = JSON.parse(textsData).filter(text => text && text.trim() !== '');
+        this.changeSpeed = parseInt(this.getAttribute('data-change-speed')) * 1000;
+        this.charSpeed = parseInt(this.getAttribute('data-char-speed'));
+      } catch (e) {
+        this.texts = ['Add your heading text'];
+      }
+    }
+
+    startAnimation() {
+      setInterval(() => {
+        if (!this.isAnimating) {
+          this.animateToNextText();
+        }
+      }, this.changeSpeed);
+    }
+
+    animateToNextText() {
+      if (this.texts.length <= 1) return;
+      
+      this.isAnimating = true;
+      const nextIndex = (this.currentTextIndex + 1) % this.texts.length;
+      const currentText = this.texts[this.currentTextIndex];
+      const nextText = this.texts[nextIndex];
+      
+      this.morphText(currentText, nextText, () => {
+        this.currentTextIndex = nextIndex;
+        this.isAnimating = false;
+      });
+    }
+
+    morphText(fromText, toText, callback) {
+      const maxLength = Math.max(fromText.length, toText.length);
+      let currentText = fromText.split('');
+      const morphStep = (index) => {
+        if (index >= maxLength) {
+          this.headingElement.innerHTML = toText.split('').map(char => 
+            `<span class="ai-glowing-heading-char-{{ ai_gen_id }}">${char === ' ' ? '&nbsp;' : char}</span>`
+          ).join('');
+          callback();
+          return;
+        }
+
+        const targetChar = toText[index] || '';
+        const currentChar = currentText[index] || '';
+        
+        if (currentChar !== targetChar) {
+          const charElement = this.headingElement.children[index];
+          if (charElement) {
+            charElement.classList.add('changing');
+          }
+          
+          setTimeout(() => {
+            currentText[index] = targetChar;
+            this.updateDisplay(currentText, maxLength);
+            
+            setTimeout(() => {
+              const updatedCharElement = this.headingElement.children[index];
+              if (updatedCharElement) {
+                updatedCharElement.classList.remove('changing');
+              }
+              morphStep(index + 1);
+            }, this.charSpeed / 2);
+          }, this.charSpeed / 2);
+        } else {
+          morphStep(index + 1);
+        }
+      };
+
+      this.updateDisplay(currentText, maxLength);
+      morphStep(0);
+    }
+
+    updateDisplay(textArray, maxLength) {
+      const displayText = textArray.slice(0, maxLength);
+      while (displayText.length < maxLength) {
+        displayText.push('');
+      }
+      
+      this.headingElement.innerHTML = displayText.map((char, index) => 
+        `<span class="ai-glowing-heading-char-{{ ai_gen_id }}">${char === ' ' ? '&nbsp;' : (char || '')}</span>`
+      ).join('');
+    }
+  }
+
+  customElements.define('animated-glowing-heading-{{ ai_gen_id }}', AnimatedGlowingHeading{{ ai_gen_id }});
+})();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Animated glowing heading",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text content"
+    },
+    {
+      "type": "text",
+      "id": "text_1",
+      "label": "Text 1",
+      "default": "Amazing Products"
+    },
+    {
+      "type": "text",
+      "id": "text_2",
+      "label": "Text 2",
+      "default": "Great Quality"
+    },
+    {
+      "type": "text",
+      "id": "text_3",
+      "label": "Text 3",
+      "default": "Best Prices"
+    },
+    {
+      "type": "text",
+      "id": "text_4",
+      "label": "Text 4"
+    },
+    {
+      "type": "text",
+      "id": "text_5",
+      "label": "Text 5"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Animation timing"
+    },
+    {
+      "type": "range",
+      "id": "text_change_speed",
+      "label": "Text change speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "char_change_speed",
+      "label": "Character change speed",
+      "min": 50,
+      "max": 300,
+      "step": 25,
+      "unit": "ms",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "changing_color",
+      "label": "Changing character color",
+      "default": "#ff6b6b"
+    },
+    {
+      "type": "header",
+      "content": "Glow effect"
+    },
+    {
+      "type": "color",
+      "id": "glow_color",
+      "label": "Glow color",
+      "default": "#00ffff"
+    },
+    {
+      "type": "range",
+      "id": "glow_intensity",
+      "label": "Glow intensity",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "label": "Glow animation speed",
+      "min": 1,
+      "max": 5,
+      "step": 0.5,
+      "unit": "s",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#121212"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Animated glowing heading"
+    }
+  ],
+  "tag": null
+}
 {% endschema %}
