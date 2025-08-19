@@ -1,0 +1,150 @@
+{% schema %}
+{
+  "name": "Categories Carousel",
+  "settings": [
+    {
+      "type": "select",
+      "id": "image_shape",
+      "label": "Image Shape",
+      "options": [
+        { "value": "circle", "label": "Circle" },
+        { "value": "square", "label": "Square" },
+        { "value": "rounded", "label": "Rounded" }
+      ],
+      "default": "circle"
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "label": "Image Size (px)",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "default": 120
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_swiper",
+      "label": "Enable Swiper on Mobile",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_block",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "block_image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "block_title",
+          "label": "Display Name"
+        },
+        {
+          "type": "url",
+          "id": "block_link",
+          "label": "Collection Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Popular Categories Carousel",
+      "category": "Custom Sections"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="popular-categories-wrapper">
+  <h2 class="text-center mb-6">Popular Categories</h2>
+  
+  <div class="categories-container {% if section.settings.enable_swiper %}swiper-container{% endif %}">
+    <div class="categories-list {% if section.settings.enable_swiper %}swiper-wrapper{% endif %}">
+      {% for block in section.blocks %}
+        <div class="category-item {% if section.settings.enable_swiper %}swiper-slide{% endif %}">
+          <a href="{{ block.settings.block_link }}">
+            {% if block.settings.block_image %}
+              <img 
+                src="{{ block.settings.block_image | image_url: width: section.settings.image_size }}" 
+                alt="{{ block.settings.block_title }}"
+                style="width: {{ section.settings.image_size }}px; height: {{ section.settings.image_size }}px;"
+                class="category-image {{ section.settings.image_shape }}">
+            {% endif %}
+            <p class="category-title">{{ block.settings.block_title }}</p>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+    
+    {% if section.settings.enable_swiper %}
+      <div class="swiper-pagination"></div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+.popular-categories-wrapper {
+  padding: 40px 20px;
+}
+.categories-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+.category-item {
+  text-align: center;
+}
+.category-image.circle {
+  border-radius: 50%;
+  object-fit: cover;
+}
+.category-image.square {
+  border-radius: 0;
+  object-fit: cover;
+}
+.category-image.rounded {
+  border-radius: 15px;
+  object-fit: cover;
+}
+.category-title {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+@media (max-width: 768px) {
+  {% if section.settings.enable_swiper %}
+  .categories-container {
+    display: block;
+  }
+  {% endif %}
+}
+</style>
+
+{% if section.settings.enable_swiper %}
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      new Swiper(".swiper-container", {
+        slidesPerView: 2.2,
+        spaceBetween: 20,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        breakpoints: {
+          768: {
+            slidesPerView: 6,
+            spaceBetween: 30,
+          },
+        },
+      });
+    });
+  </script>
+{% endif %}
