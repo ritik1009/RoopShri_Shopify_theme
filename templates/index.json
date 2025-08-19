@@ -107,7 +107,7 @@
             "font_family": "helvetica_n7",
             "font_size": 48,
             "text_color": "#121212",
-            "changing_color": "#ff6b6b",
+            "changing_color": "#121212",
             "glow_color": "#ffffff",
             "glow_intensity": 5,
             "animation_speed": 2,
