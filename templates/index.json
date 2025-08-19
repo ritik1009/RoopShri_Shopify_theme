@@ -188,48 +188,6 @@
       ],
       "settings": {}
     },
-    "collection_carousel_yykkeN": {
-      "type": "collection-carousel",
-      "blocks": {
-        "collection_block_DPicUU": {
-          "type": "collection_block",
-          "settings": {
-            "block_image": "shopify://shop_images/product-1-4.webp",
-            "block_title": "Ring",
-            "block_link": "shopify://collections/rings"
-          }
-        },
-        "collection_block_QqPGqm": {
-          "type": "collection_block",
-          "settings": {
-            "block_image": "shopify://shop_images/Product-14-1.webp",
-            "block_title": "",
-            "block_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "collection_block_DPicUU",
-        "collection_block_QqPGqm"
-      ],
-      "name": "Popular Categories Carousel",
-      "settings": {
-        "section_title": "Popular",
-        "title_alignment": "center",
-        "title_size": 31,
-        "title_color": "#111111",
-        "text_color": "#333333",
-        "title_font_size": 16,
-        "image_size": 120,
-        "image_shape": "circle",
-        "enable_shadow": true,
-        "enable_hover_effect": true,
-        "background_color": "#ffffff",
-        "gap_size": 30,
-        "padding_top": 50,
-        "padding_bottom": 50
-      }
-    },
     "collection_list_PhFXde": {
       "type": "collection-list",
       "blocks": {
@@ -264,6 +222,7 @@
         "featured_collection_EcHenU",
         "featured_collection_qz4Fqn"
       ],
+      "disabled": true,
       "custom_css": [
         ".card--standard .card__inner,.card .card__inner .card__media {border-radius: 100% !important;}",
         ".card__heading .full-unstyled-link {text-align: center;}"
@@ -358,7 +317,6 @@
   "order": [
     "slideshow_YeD8yj",
     "17556305790600e509",
-    "collection_carousel_yykkeN",
     "collection_list_PhFXde",
     "featured_collection",
     "image_banner_9mzAjV"
