@@ -1,204 +1,403 @@
+{% comment %}
+  Promo Banners – responsive grid or slider
+  • Desktop: grid (1–4 per row) or optional slider
+  • Mobile: slider/swipe enabled (stack visually if only 1 per view)
+  • Each card: image, overlay, heading, subheading, button, alignment, colors
+  • Global controls: spacing (gap/padding/margin), animations, custom CSS classes
+  • Premium look: rounded corners, soft shadows, hover zoom
+{% endcomment %}
+
+<section id="promo-banners-{{ section.id }}"
+  class="promo-banners {{ section.settings.custom_css_class }}"
+  style="
+    background: {{ section.settings.section_bg }};
+    padding-top: {{ section.settings.pad_top }}px;
+    padding-bottom: {{ section.settings.pad_bottom }}px;
+    margin-top: {{ section.settings.margin_top }}px;
+    margin-bottom: {{ section.settings.margin_bottom }}px;
+  "
+  data-desktop-swiper="{{ section.settings.enable_swiper_desktop }}"
+>
+  {% if section.settings.section_title != blank %}
+    <div class="pb-header pb-header--{{ section.settings.title_align }}">
+      <h2 class="pb-title"
+          style="color: {{ section.settings.title_color }};
+                 font-size: {{ section.settings.title_size }}px;
+                 font-weight: {{ section.settings.title_weight }};">
+        {{ section.settings.section_title }}
+      </h2>
+    </div>
+  {% endif %}
+
+  {%- assign use_swiper = true -%} {# Mobile is always swipe; desktop conditional in JS #}
+
+  <div class="pb-container {% if use_swiper %}pb-swiper-{{ section.id }}{% else %}pb-grid{% endif %}"
+       style="--gap: {{ section.settings.card_gap }}px;">
+    <div class="pb-list {% if use_swiper %}swiper-wrapper{% else %}pb-grid-inner{% endif %}"
+         style="
+          --cols-desktop: {{ section.settings.cols_desktop }};
+          --cols-tablet: {{ section.settings.cols_tablet }};
+          --card-radius: {{ section.settings.card_radius }}px;
+          --card-shadow: {% if section.settings.card_shadow %}0 10px 28px rgba(0,0,0,.10){% else %}none{% endif %};
+          --aspect-w: {{ section.settings.aspect_w }};
+          --aspect-h: {{ section.settings.aspect_h }};
+         ">
+      {% for block in section.blocks %}
+        {% assign img = block.settings.image %}
+        <div class="pb-item {% if use_swiper %}swiper-slide{% endif %} anim--{{ section.settings.entry_animation }}" {{ block.shopify_attributes }}>
+          <div class="pb-card {% if section.settings.hover_effect %}pb-card--hover{% endif %}">
+            <a href="{{ block.settings.button_link | default: '#' }}" class="pb-link" tabindex="-1" aria-hidden="true"></a>
+
+            <div class="pb-media">
+              {% if img %}
+                <img
+                  class="pb-img"
+                  src="{{ img | image_url: width: 2200 }}"
+                  srcset="
+                    {{ img | image_url: width: 600 }} 600w,
+                    {{ img | image_url: width: 900 }} 900w,
+                    {{ img | image_url: width: 1400 }} 1400w,
+                    {{ img | image_url: width: 2000 }} 2000w
+                  "
+                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, {{ 100 | divided_by: section.settings.cols_desktop | append: 'vw' }}"
+                  alt="{{ block.settings.heading | escape }}"
+                  loading="lazy"
+                >
+              {% else %}
+                <div class="pb-placeholder"></div>
+              {% endif %}
+              <span class="pb-overlay"
+                    style="background: {{ block.settings.overlay_color }};
+                           opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"></span>
+            </div>
+
+            <div class="pb-content h-{{ block.settings.h_align }} v-{{ block.settings.v_align }}"
+                 style="max-width: {{ block.settings.content_max }}%; padding: {{ block.settings.content_pad }}px;">
+              {% if block.settings.heading != blank %}
+                <h3 class="pb-heading"
+                    style="color: {{ block.settings.text_color }};
+                           font-size: {{ block.settings.heading_size }}px;
+                           font-weight: {{ block.settings.heading_weight }};">
+                  {{ block.settings.heading }}
+                </h3>
+              {% endif %}
+
+              {% if block.settings.subheading != blank %}
+                <p class="pb-sub"
+                   style="color: {{ block.settings.text_color }};
+                          font-size: {{ block.settings.sub_size }}px;">
+                  {{ block.settings.subheading }}
+                </p>
+              {% endif %}
+
+              {% if block.settings.button_label != blank %}
+                <a class="pb-btn"
+                   href="{{ block.settings.button_link | default: '#' }}"
+                   style="
+                     --btn-bg: {{ block.settings.btn_bg }};
+                     --btn-color: {{ block.settings.btn_color }};
+                     --btn-bg-hover: {{ block.settings.btn_bg_hover }};
+                     --btn-color-hover: {{ block.settings.btn_color_hover }};
+                   ">
+                  {{ block.settings.button_label }}
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Swiper UI (shown only when slider active) -->
+    <div class="pb-pagination-{{ section.id }}"></div>
+    {% if section.settings.show_arrows %}
+      <button class="pb-nav pb-prev-{{ section.id }}" aria-label="Previous">&#10094;</button>
+      <button class="pb-nav pb-next-{{ section.id }}" aria-label="Next">&#10095;</button>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  /* Container / header */
+  #promo-banners-{{ section.id }} .pb-header { max-width: {{ section.settings.max_width }}px; margin: 0 auto 18px; padding: 0 16px; }
+  #promo-banners-{{ section.id }} .pb-header--left { text-align: left; }
+  #promo-banners-{{ section.id }} .pb-header--center { text-align: center; }
+  #promo-banners-{{ section.id }} .pb-header--right { text-align: right; }
+  #promo-banners-{{ section.id }} .pb-title { margin: 0; line-height: 1.15; }
+
+  /* Grid (desktop/tablet) */
+  #promo-banners-{{ section.id }} .pb-container { position: relative; max-width: {{ section.settings.max_width }}px; margin: 0 auto; padding: 0 16px; }
+  #promo-banners-{{ section.id }} .pb-grid-inner {
+    display: grid;
+    gap: var(--gap);
+    grid-template-columns: repeat(var(--cols-desktop), minmax(0, 1fr));
+    align-items: stretch;
+  }
+  @media (max-width: 1100px) {
+    #promo-banners-{{ section.id }} .pb-grid-inner { grid-template-columns: repeat(var(--cols-tablet), minmax(0, 1fr)); }
+  }
+  @media (max-width: 768px) {
+    #promo-banners-{{ section.id }} .pb-grid-inner { grid-template-columns: 1fr; }
+  }
+
+  /* Card */
+  #promo-banners-{{ section.id }} .pb-item { height: auto; }
+  #promo-banners-{{ section.id }} .pb-card {
+    position: relative; overflow: hidden; border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow); background: #f7f7f7; transition: transform .35s ease, box-shadow .35s ease;
+  }
+  #promo-banners-{{ section.id }} .pb-card--hover:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(0,0,0,.12); }
+  #promo-banners-{{ section.id }} .pb-link { position: absolute; inset: 0; z-index: 1; }
+
+  /* Media */
+  #promo-banners-{{ section.id }} .pb-media { position: relative; width: 100%; aspect-ratio: var(--aspect-w) / var(--aspect-h); }
+  #promo-banners-{{ section.id }} .pb-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #promo-banners-{{ section.id }} .pb-overlay { position: absolute; inset: 0; border-radius: var(--card-radius); pointer-events: none; }
+
+  /* Content positioning */
+  #promo-banners-{{ section.id }} .pb-content { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 8px; z-index: 2; }
+  #promo-banners-{{ section.id }} .h-left   { align-items: flex-start; text-align: left; padding-left: 24px; }
+  #promo-banners-{{ section.id }} .h-center { align-items: center; text-align: center; }
+  #promo-banners-{{ section.id }} .h-right  { align-items: flex-end; text-align: right; padding-right: 24px; }
+  #promo-banners-{{ section.id }} .v-top    { justify-content: flex-start; }
+  #promo-banners-{{ section.id }} .v-middle { justify-content: center; }
+  #promo-banners-{{ section.id }} .v-bottom { justify-content: flex-end; }
+
+  #promo-banners-{{ section.id }} .pb-heading { margin: 0; line-height: 1.15; }
+  #promo-banners-{{ section.id }} .pb-sub { margin: 0; opacity: .9; }
+
+  /* Button */
+  #promo-banners-{{ section.id }} .pb-btn {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 6px;
+    padding: 10px 16px; font-weight: 600; border-radius: 999px; border: 1px solid transparent;
+    background: var(--btn-bg); color: var(--btn-color); text-decoration: none; transition: all .25s ease;
+  }
+  #promo-banners-{{ section.id }} .pb-card:hover .pb-btn { background: var(--btn-bg-hover); color: var(--btn-color-hover); }
+
+  /* Placeholder */
+  #promo-banners-{{ section.id }} .pb-placeholder { width: 100%; height: 100%; background: #eaeaea; }
+
+  /* Swiper UI */
+  #promo-banners-{{ section.id }} .pb-nav {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
+    width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(255,255,255,.95); box-shadow: 0 6px 22px rgba(0,0,0,.10); cursor: pointer; border: 0;
+  }
+  #promo-banners-{{ section.id }} .pb-prev-{{ section.id }} { left: 8px; }
+  #promo-banners-{{ section.id }} .pb-next-{{ section.id }} { right: 8px; }
+  #promo-banners-{{ section.id }} .pb-pagination-{{ section.id }} { margin-top: 14px; text-align: center; }
+
+  /* Animations */
+  #promo-banners-{{ section.id }} .anim--fade  { opacity: 0; }
+  #promo-banners-{{ section.id }} .anim--slide { opacity: 0; transform: translateY(18px); }
+  #promo-banners-{{ section.id }} .anim--zoom  { opacity: 0; transform: scale(.96); }
+  #promo-banners-{{ section.id }} .anim--none  { opacity: 1; transform: none; }
+  #promo-banners-{{ section.id }} .animate-in  { opacity: 1 !important; transform: none !important; transition: all .6s cubic-bezier(.2,.6,.2,1); }
+
+  /* Small screens: ensure paddings compact */
+  @media (max-width: 768px) {
+    #promo-banners-{{ section.id }} .pb-content { padding: 16px !important; }
+  }
+
+  {{ section.settings.custom_css }}
+</style>
+
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
+<script>
+(function() {
+  const root = document.getElementById('promo-banners-{{ section.id }}');
+  const swiperSelector = '.pb-swiper-{{ section.id }}';
+  const listEl = root.querySelector('.pb-list');
+
+  /* Entrance animations */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('animate-in');
+        io.unobserve(e.target);
+      }
+    })
+  }, { threshold: 0.2 });
+  root.querySelectorAll('.pb-item').forEach(el => io.observe(el));
+
+  function initSwiper() {
+    if (!window.Swiper) return;
+    if (root._swiper) { root._swiper.update(); return; }
+
+    root._swiper = new Swiper(swiperSelector, {
+      slidesPerView: 1,
+      spaceBetween: {{ section.settings.card_gap }},
+      loop: {{ section.settings.swiper_loop }},
+      speed: {{ section.settings.swiper_speed }},
+      autoplay: {{ section.settings.autoplay_enable }} ? { delay: {{ section.settings.autoplay_delay }}, disableOnInteraction: true } : false,
+      pagination: { el: '.pb-pagination-{{ section.id }}', clickable: true },
+      navigation: {
+        nextEl: '.pb-next-{{ section.id }}',
+        prevEl: '.pb-prev-{{ section.id }}'
+      },
+      breakpoints: {
+        769: {
+          slidesPerView: {{ section.settings.enable_swiper_desktop | default: false | json }} ? {{ section.settings.cols_desktop }} : 1,
+          spaceBetween: {{ section.settings.card_gap }}
+        },
+        1101: {
+          slidesPerView: {{ section.settings.enable_swiper_desktop | default: false | json }} ? {{ section.settings.cols_desktop }} : 1
+        }
+      }
+    });
+  }
+
+  function maybeInit() {
+    // Mobile: always swiper. Desktop: only if enabled.
+    const isDesktop = window.matchMedia('(min-width: 769px)').matches;
+    const wantsDesktopSwiper = root.dataset.desktopSwiper === 'true';
+
+    if (!document.querySelector(swiperSelector)) return;
+
+    if (!isDesktop || (isDesktop && wantsDesktopSwiper)) {
+      if (!window.Swiper) {
+        const s = document.createElement('script');
+        s.src = 'https://unpkg.com/swiper/swiper-bundle.min.js';
+        s.onload = initSwiper;
+        document.head.appendChild(s);
+      } else {
+        initSwiper();
+      }
+    } else {
+      if (root._swiper) { root._swiper.destroy(true, true); root._swiper = null; }
+    }
+  }
+
+  maybeInit();
+  window.addEventListener('resize', maybeInit, { passive: true });
+})();
+</script>
+
 {% schema %}
 {
-  "name": "Custom Double Banner",
+  "name": "Promo Banners",
   "settings": [
-    {
-      "type": "range",
-      "id": "section_height",
-      "label": "Banner Height (Desktop)",
-      "default": 300,
-      "min": 150,
-      "max": 600,
-      "step": 10,
-      "unit": "px"
+    { "type": "text", "id": "section_title", "label": "Section title", "default": "New Collection" },
+    { "type": "select", "id": "title_align", "label": "Title alignment", "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
-    {
-      "type": "range",
-      "id": "section_height_mobile",
-      "label": "Banner Height (Mobile)",
-      "default": 200,
-      "min": 100,
-      "max": 400,
-      "step": 10,
-      "unit": "px"
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#111111" },
+    { "type": "range", "id": "title_size", "label": "Title font size (px)", "min": 16, "max": 48, "step": 1, "default": 28 },
+    { "type": "select", "id": "title_weight", "label": "Title weight", "default": "600",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ]
     },
-    {
-      "type": "range",
-      "id": "gap",
-      "label": "Gap between banners",
-      "default": 10,
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px"
+
+    { "type": "header", "content": "Layout & Spacing" },
+    { "type": "range", "id": "cols_desktop", "label": "Banners per row (desktop)", "min": 1, "max": 4, "step": 1, "default": 2 },
+    { "type": "range", "id": "cols_tablet", "label": "Banners per row (tablet)", "min": 1, "max": 3, "step": 1, "default": 2 },
+    { "type": "range", "id": "card_gap", "label": "Gap between cards (px)", "min": 6, "max": 48, "step": 2, "default": 20 },
+    { "type": "range", "id": "max_width", "label": "Max content width (px)", "min": 960, "max": 1600, "step": 20, "default": 1200 },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#ffffff" },
+    { "type": "range", "id": "pad_top", "label": "Padding top (px)", "min": 0, "max": 160, "step": 4, "default": 48 },
+    { "type": "range", "id": "pad_bottom", "label": "Padding bottom (px)", "min": 0, "max": 160, "step": 4, "default": 48 },
+    { "type": "range", "id": "margin_top", "label": "Margin top (px)", "min": 0, "max": 160, "step": 4, "default": 0 },
+    { "type": "range", "id": "margin_bottom", "label": "Margin bottom (px)", "min": 0, "max": 160, "step": 4, "default": 0 },
+
+    { "type": "header", "content": "Card Appearance" },
+    { "type": "range", "id": "card_radius", "label": "Card radius (px)", "min": 0, "max": 36, "step": 1, "default": 16 },
+    { "type": "checkbox", "id": "card_shadow", "label": "Enable card shadow", "default": true },
+    { "type": "checkbox", "id": "hover_effect", "label": "Hover lift/zoom effect", "default": true },
+    { "type": "range", "id": "aspect_w", "label": "Aspect ratio width", "min": 1, "max": 21, "step": 1, "default": 16 },
+    { "type": "range", "id": "aspect_h", "label": "Aspect ratio height", "min": 1, "max": 12, "step": 1, "default": 9 },
+
+    { "type": "header", "content": "Slider (Swiper)" },
+    { "type": "checkbox", "id": "enable_swiper_desktop", "label": "Enable slider on desktop", "default": false },
+    { "type": "checkbox", "id": "show_arrows", "label": "Show arrows (when slider active)", "default": true },
+    { "type": "checkbox", "id": "swiper_loop", "label": "Loop slides", "default": false },
+    { "type": "range", "id": "swiper_speed", "label": "Slide speed (ms)", "min": 200, "max": 1200, "step": 50, "default": 450 },
+    { "type": "checkbox", "id": "autoplay_enable", "label": "Autoplay", "default": false },
+    { "type": "range", "id": "autoplay_delay", "label": "Autoplay delay (ms)", "min": 1500, "max": 7000, "step": 100, "default": 3000 },
+
+    { "type": "header", "content": "Animations" },
+    { "type": "select", "id": "entry_animation", "label": "Entrance animation", "default": "fade",
+      "options": [
+        { "value": "fade", "label": "Fade in" },
+        { "value": "slide", "label": "Slide up" },
+        { "value": "zoom", "label": "Zoom" },
+        { "value": "none", "label": "None" }
+      ]
     },
-    {
-      "type": "range",
-      "id": "section_padding",
-      "label": "Section Padding",
-      "default": 20,
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "section_margin",
-      "label": "Section Margin",
-      "default": 20,
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_animation",
-      "label": "Enable Hover Animation",
-      "default": true
-    }
+
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "custom_css_class", "label": "Custom CSS class" },
+    { "type": "textarea", "id": "custom_css", "label": "Custom CSS" }
   ],
   "blocks": [
     {
       "type": "banner",
-      "name": "Banner Item",
+      "name": "Banner",
       "settings": [
-        {
-          "type": "image_picker",
-          "id": "banner_image",
-          "label": "Banner Image"
+        { "type": "image_picker", "id": "image", "label": "Image" },
+
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Best Gold Filled Bracelet" },
+        { "type": "range", "id": "heading_size", "label": "Heading size (px)", "min": 14, "max": 48, "step": 1, "default": 28 },
+        { "type": "select", "id": "heading_weight", "label": "Heading weight", "default": "600",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semibold" },
+            { "value": "700", "label": "Bold" }
+          ]
         },
-        {
-          "type": "text",
-          "id": "banner_subtitle",
-          "label": "Subtitle",
-          "default": "NEW COLLECTION"
-        },
-        {
-          "type": "text",
-          "id": "banner_title",
-          "label": "Title",
-          "default": "Best Gold Filled Bracelet"
-        },
-        {
-          "type": "url",
-          "id": "banner_link",
-          "label": "Link"
-        },
-        {
-          "type": "color",
-          "id": "text_color",
-          "label": "Text Color",
-          "default": "#000000"
-        },
-        {
-          "type": "select",
-          "id": "text_alignment",
-          "label": "Text Alignment",
-          "default": "left",
+
+        { "type": "text", "id": "subheading", "label": "Subheading (optional)", "default": "Shop now" },
+        { "type": "range", "id": "sub_size", "label": "Subheading size (px)", "min": 10, "max": 24, "step": 1, "default": 14 },
+
+        { "type": "color", "id": "text_color", "label": "Text color", "default": "#111111" },
+
+        { "type": "select", "id": "h_align", "label": "Horizontal alignment", "default": "left",
           "options": [
             { "value": "left", "label": "Left" },
             { "value": "center", "label": "Center" },
             { "value": "right", "label": "Right" }
           ]
         },
-        {
-          "type": "color",
-          "id": "background_color",
-          "label": "Background Color",
-          "default": "#ffffff"
-        }
+        { "type": "select", "id": "v_align", "label": "Vertical alignment", "default": "middle",
+          "options": [
+            { "value": "top", "label": "Top" },
+            { "value": "middle", "label": "Middle" },
+            { "value": "bottom", "label": "Bottom" }
+          ]
+        },
+        { "type": "range", "id": "content_max", "label": "Max content width (%)", "min": 40, "max": 100, "step": 5, "default": 70 },
+        { "type": "range", "id": "content_pad", "label": "Content padding (px)", "min": 8, "max": 40, "step": 2, "default": 16 },
+
+        { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "rgba(0,0,0,1)" },
+        { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity (%)", "min": 0, "max": 100, "step": 5, "default": 10 },
+
+        { "type": "text", "id": "button_label", "label": "Button label (optional)", "default": "Shop Now" },
+        { "type": "url", "id": "button_link", "label": "Button link" },
+        { "type": "color", "id": "btn_bg", "label": "Button background", "default": "#111111" },
+        { "type": "color", "id": "btn_color", "label": "Button text color", "default": "#ffffff" },
+        { "type": "color", "id": "btn_bg_hover", "label": "Button hover background", "default": "#333333" },
+        { "type": "color", "id": "btn_color_hover", "label": "Button hover text color", "default": "#ffffff" }
       ]
     }
   ],
-  "max_blocks": 2,
   "presets": [
     {
-      "name": "Custom Double Banner",
-      "category": "Image"
+      "name": "Promo Banners",
+      "category": "Banners",
+      "blocks": [
+        { "type": "banner" },
+        { "type": "banner" }
+      ]
     }
   ]
 }
 {% endschema %}
-
-{% stylesheet %}
-.custom-double-banner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--gap);
-  padding: var(--section-padding);
-  margin: var(--section-margin) auto;
-}
-
-.custom-double-banner .banner {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  background-color: var(--banner-bg);
-}
-
-.custom-double-banner .banner img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-{% if section.settings.enable_animation %}
-.custom-double-banner .banner:hover img {
-  transform: scale(1.05);
-}
-{% endif %}
-
-.custom-double-banner .banner-content {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
-  padding: 20px;
-}
-
-.custom-double-banner .banner-content h3,
-.custom-double-banner .banner-content p {
-  margin: 0;
-}
-
-@media (max-width: 768px) {
-  .custom-double-banner {
-    grid-template-columns: 1fr;
-  }
-}
-{% endstylesheet %}
-
-<div class="custom-double-banner"
-     style="
-      --gap: {{ section.settings.gap }}px;
-      --section-padding: {{ section.settings.section_padding }}px;
-      --section-margin: {{ section.settings.section_margin }}px;
-      --banner-height: {{ section.settings.section_height }}px;
-      --banner-height-mobile: {{ section.settings.section_height_mobile }}px;
-     ">
-  {% for block in section.blocks %}
-    <div class="banner" style="height: var(--banner-height); --banner-bg: {{ block.settings.background_color }};">
-      {% if block.settings.banner_image != blank %}
-        <img src="{{ block.settings.banner_image | img_url: '1200x' }}" alt="{{ block.settings.banner_title }}" style="height: 100%;">
-      {% endif %}
-      <div class="banner-content" style="text-align: {{ block.settings.text_alignment }}; color: {{ block.settings.text_color }};">
-        <p>{{ block.settings.banner_subtitle }}</p>
-        <h3>{{ block.settings.banner_title }}</h3>
-        {% if block.settings.banner_link != blank %}
-          <a href="{{ block.settings.banner_link }}" class="btn">Shop Now</a>
-        {% endif %}
-      </div>
-    </div>
-  {% endfor %}
-</div>
-
-<style>
-@media (max-width: 768px) {
-  .custom-double-banner .banner {
-    height: var(--banner-height-mobile) !important;
-  }
-}
-</style>
