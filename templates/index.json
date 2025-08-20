@@ -300,6 +300,91 @@
         "mobile_content_alignment": "center",
         "show_text_below": false
       }
+    },
+    "collection_toggle_8D4K6n": {
+      "type": "collection-toggle",
+      "blocks": {
+        "tab_JTq7PK": {
+          "type": "tab",
+          "settings": {
+            "label": "Featured",
+            "collection": "bangles"
+          }
+        },
+        "tab_GF6TG4": {
+          "type": "tab",
+          "settings": {
+            "label": "New Arrivals",
+            "collection": "fancy-earring"
+          }
+        },
+        "tab_iQGbak": {
+          "type": "tab",
+          "settings": {
+            "label": "Best Seller",
+            "collection": "jewelry-sets"
+          }
+        }
+      },
+      "block_order": [
+        "tab_JTq7PK",
+        "tab_GF6TG4",
+        "tab_iQGbak"
+      ],
+      "name": "Collection Toggle (Tabbed)",
+      "settings": {
+        "title": "Trending Products",
+        "subtitle": "",
+        "title_align": "center",
+        "title_color": "#111111",
+        "subtitle_color": "#6b7280",
+        "title_size": 28,
+        "title_weight": "600",
+        "cols_desktop": 4,
+        "cols_tablet": 3,
+        "cols_mobile": 2,
+        "card_gap": 20,
+        "mobile_swipe": false,
+        "initial_limit": 8,
+        "max_render": 24,
+        "enable_load_more": false,
+        "load_more_label": "Load more",
+        "card_radius": 7,
+        "card_shadow": true,
+        "aspect_w": 1,
+        "aspect_h": 1,
+        "overlay_color": "rgba(0,0,0,0.0)",
+        "overlay_opacity": 0,
+        "hover_swap": true,
+        "hover_zoom": true,
+        "text_align": "left",
+        "show_vendor": false,
+        "vendor_color": "#6b7280",
+        "show_title": true,
+        "product_title_size": 14,
+        "product_title_color": "#111111",
+        "price_color": "#111111",
+        "show_badge": true,
+        "badge_bg": "#ef4444",
+        "badge_color": "#ffffff",
+        "show_button": true,
+        "button_label": "Add to cart",
+        "button_label_soldout": "Sold out",
+        "btn_bg": "#111111",
+        "btn_color": "#ffffff",
+        "btn_bg_hover": "#333333",
+        "btn_color_hover": "#ffffff",
+        "btn_radius": 7,
+        "section_bg": "#ffffff",
+        "pad_top": 48,
+        "pad_bottom": 48,
+        "mg_top": 0,
+        "mg_bottom": 0,
+        "max_width": 1200,
+        "entry_animation": "slide",
+        "custom_css_class": "",
+        "custom_css": ""
+      }
     }
   },
   "order": [
@@ -307,6 +392,7 @@
     "collection_list_PhFXde",
     "featured_collection",
     "promo_banners_XUjYxb",
-    "image_banner_9mzAjV"
+    "image_banner_9mzAjV",
+    "collection_toggle_8D4K6n"
   ]
 }
