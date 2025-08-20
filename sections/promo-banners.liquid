@@ -135,6 +135,7 @@
     grid-template-columns: repeat(var(--cols-desktop), minmax(0, 1fr));
     align-items: stretch;
   }
+  @media(min-width:1100)
   @media (max-width: 1100px) {
     #promo-banners-{{ section.id }} .pb-container .pb-item { flex-grow:1; }
     #promo-banners-{{ section.id }} .pb-grid-inner { grid-template-columns: repeat(var(--cols-tablet), minmax(0, 1fr)); }
