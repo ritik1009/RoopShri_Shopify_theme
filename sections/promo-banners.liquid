@@ -29,7 +29,7 @@
     </div>
   {% endif %}
 
-  {%- assign use_swiper = true -%} {# Mobile is always swipe; desktop conditional in JS #}
+  {%- assign use_swiper = true -%}
 
   <div class="pb-container {% if use_swiper %}pb-swiper-{{ section.id }}{% else %}pb-grid{% endif %}"
        style="--gap: {{ section.settings.card_gap }}px;">
