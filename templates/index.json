@@ -89,105 +89,6 @@
         "accessibility_info": "Slideshow about our brand"
       }
     },
-    "17556305790600e509": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_cf61585_9hRFQj": {
-          "type": "ai_gen_block_cf61585",
-          "settings": {
-            "text_1": "Amazing Products",
-            "text_2": "Great Quality",
-            "text_3": "Best Prices",
-            "text_4": "",
-            "text_5": "",
-            "text_alignment": "center",
-            "text_animation_type": "morph",
-            "text_change_speed": 4,
-            "char_change_speed": 100,
-            "font_family": "helvetica_n7",
-            "font_size": 48,
-            "text_color": "#121212",
-            "changing_color": "#121212",
-            "glow_color": "#ffffff",
-            "glow_intensity": 5,
-            "animation_speed": 2,
-            "padding": 0,
-            "background_color": "#f3f3f3"
-          },
-          "blocks": {}
-        },
-        "ai_gen_block_b41200b_Mpwfwj": {
-          "type": "ai_gen_block_b41200b",
-          "settings": {
-            "heading": "Shop Collections",
-            "heading_alignment": "center",
-            "heading_size": 32,
-            "heading_color": "#000000",
-            "heading_font": "helvetica_n4",
-            "heading_spacing": 32,
-            "enable_swiper": false,
-            "items_per_view": 3,
-            "items_per_view_mobile": "1",
-            "item_spacing": 20,
-            "item_width": 200,
-            "item_width_mobile": 250,
-            "item_height": 200,
-            "item_height_mobile": 200,
-            "image_shape": "circle",
-            "border_radius": 12,
-            "hover_animation": "scale",
-            "text_alignment": "center",
-            "text_spacing": 16,
-            "title_size": 18,
-            "title_color": "#000000",
-            "title_font": "helvetica_n4",
-            "description_spacing": 8,
-            "description_size": 14,
-            "description_color": "#666666",
-            "description_font": "helvetica_n4",
-            "nav_button_color": "#000000",
-            "nav_button_text_color": "#ffffff",
-            "dot_color": "#000000",
-            "section_padding_top": 44,
-            "section_padding_bottom": 44,
-            "collection_1": "",
-            "custom_image_1": "shopify://shop_images/product-1-4.webp",
-            "custom_title_1": "bbbb",
-            "custom_description_1": "",
-            "custom_link_1": "",
-            "collection_2": "",
-            "custom_image_2": "shopify://shop_images/product-1-1_254c04a2-1186-480e-ba03-e58e1f8e3559.webp",
-            "custom_title_2": "gggg",
-            "custom_description_2": "",
-            "custom_link_2": "",
-            "collection_3": "",
-            "custom_image_3": "shopify://shop_images/product-12-1.webp",
-            "custom_title_3": "ggg",
-            "custom_description_3": "",
-            "custom_link_3": "",
-            "collection_4": "",
-            "custom_image_4": "shopify://shop_images/product-12-1.webp",
-            "custom_title_4": "gggg",
-            "custom_description_4": "",
-            "custom_link_4": "",
-            "collection_5": "",
-            "custom_title_5": "",
-            "custom_description_5": "",
-            "custom_link_5": "",
-            "collection_6": "",
-            "custom_title_6": "",
-            "custom_description_6": "",
-            "custom_link_6": ""
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_cf61585_9hRFQj",
-        "ai_gen_block_b41200b_Mpwfwj"
-      ],
-      "settings": {}
-    },
     "collection_list_PhFXde": {
       "type": "collection-list",
       "blocks": {
@@ -222,7 +123,6 @@
         "featured_collection_EcHenU",
         "featured_collection_qz4Fqn"
       ],
-      "disabled": true,
       "custom_css": [
         ".card--standard .card__inner,.card .card__inner .card__media {border-radius: 100% !important;}",
         ".card__heading .full-unstyled-link {text-align: center;}"
@@ -272,6 +172,107 @@
         "padding_bottom": 36
       }
     },
+    "promo_banners_XUjYxb": {
+      "type": "promo-banners",
+      "blocks": {
+        "banner_B7WaCW": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/young-woman-in-sunglasses-with-rings.jpg",
+            "badge": "",
+            "badge_bg": "#ffffff",
+            "badge_color": "#111111",
+            "heading": "Best Gold Filled Bracelet",
+            "heading_size": 28,
+            "heading_weight": "600",
+            "subheading": "Shop now",
+            "sub_size": 14,
+            "text_color": "#111111",
+            "h_align": "left",
+            "v_align": "middle",
+            "content_max": 50,
+            "content_pad": 12,
+            "overlay_color": "rgba(255,255,255,0.0)",
+            "overlay_opacity": 45,
+            "button_label": "Shop Now",
+            "button_link": "",
+            "btn_style": "solid",
+            "btn_bg": "#111111",
+            "btn_color": "#ffffff",
+            "btn_bg_hover": "#333333",
+            "btn_color_hover": "#ffffff",
+            "entry_animation": "fade"
+          }
+        },
+        "banner_cLAUcR": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/Product-17-3.webp",
+            "badge": "NEW COLLECTION",
+            "badge_bg": "#ffffff",
+            "badge_color": "#111111",
+            "heading": "Best Gold Filled Bracelet",
+            "heading_size": 28,
+            "heading_weight": "600",
+            "subheading": "Shop now",
+            "sub_size": 14,
+            "text_color": "#111111",
+            "h_align": "left",
+            "v_align": "middle",
+            "content_max": 40,
+            "content_pad": 16,
+            "overlay_color": "rgba(255,255,255,0.0)",
+            "overlay_opacity": 10,
+            "button_label": "Shop Now",
+            "button_link": "",
+            "btn_style": "solid",
+            "btn_bg": "#111111",
+            "btn_color": "#ffffff",
+            "btn_bg_hover": "#333333",
+            "btn_color_hover": "#ffffff",
+            "entry_animation": "fade"
+          }
+        }
+      },
+      "block_order": [
+        "banner_B7WaCW",
+        "banner_cLAUcR"
+      ],
+      "name": "Promo Banners",
+      "settings": {
+        "section_title": "New Collection",
+        "section_subtitle": "",
+        "title_align": "center",
+        "title_color": "#111111",
+        "subtitle_color": "#555555",
+        "title_size": 30,
+        "title_weight": "600",
+        "subtitle_size": 14,
+        "cols_desktop": 3,
+        "cols_tablet": 2,
+        "card_gap": 20,
+        "card_radius": 24,
+        "card_shadow": true,
+        "enable_hover": true,
+        "max_width": 960,
+        "aspect_width": 6,
+        "aspect_height": 6,
+        "enable_swiper_mobile": true,
+        "enable_swiper_desktop": true,
+        "show_arrows": true,
+        "swiper_loop": false,
+        "swiper_speed": 450,
+        "swiper_slides": 1,
+        "swiper_slides_desktop": 2,
+        "autoplay_enable": false,
+        "autoplay_delay": 3000,
+        "section_bg": "#ffffff",
+        "pad_top": 20,
+        "pad_bottom": 28,
+        "custom_css_class": "",
+        "custom_css": ""
+      }
+    },
     "image_banner_9mzAjV": {
       "type": "image-banner",
       "blocks": {
@@ -316,9 +317,9 @@
   },
   "order": [
     "slideshow_YeD8yj",
-    "17556305790600e509",
     "collection_list_PhFXde",
     "featured_collection",
+    "promo_banners_XUjYxb",
     "image_banner_9mzAjV"
   ]
 }

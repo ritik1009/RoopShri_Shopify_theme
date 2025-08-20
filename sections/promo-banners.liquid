@@ -144,7 +144,7 @@
   #section-{{ section.id }} .promo-banners__header--center { text-align: center; }
   #section-{{ section.id }} .promo-banners__header--right  { text-align: right; }
 
-  #section-{{ section.id }} .grid-container { max-width: {{ section.settings.max_width }}px; margin: 0 auto; padding: 0 16px; }
+  #section-{{ section.id }} .grid-container { max-width: {{ section.settings.max_width }}px; max-height: {{ section.settings.max_height }}px; margin: 0 auto; padding: 0 16px; }
   #section-{{ section.id }} .grid {
     display: grid;
     grid-template-columns: repeat(var(--cols-desktop), minmax(0, 1fr));
@@ -331,7 +331,7 @@
     { "type": "checkbox", "id": "card_shadow", "label": "Enable card shadow", "default": true },
     { "type": "checkbox", "id": "enable_hover", "label": "Hover lift/zoom effect", "default": true },
     { "type": "range", "id": "max_width", "label": "Content max width (px)", "min": 400, "max": 1600, "step": 20, "default": 1200 },
-    
+    { "type": "range", "id": "max_height", "label": "Content max width (px)", "min": 400, "max": 1600, "step": 20, "default": 1200 },
 
     { "type": "header", "content": "Aspect Ratio" },
     { "type": "range", "id": "aspect_width", "label": "Aspect width", "min": 1, "max": 21, "step": 1, "default": 16 },
