@@ -23,6 +23,36 @@
       "unit": "px"
     },
     {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between banners",
+      "default": 10,
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section Padding",
+      "default": 20,
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_margin",
+      "label": "Section Margin",
+      "default": 20,
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px"
+    },
+    {
       "type": "checkbox",
       "id": "enable_animation",
       "label": "Enable Hover Animation",
@@ -72,6 +102,12 @@
             { "value": "center", "label": "Center" },
             { "value": "right", "label": "Right" }
           ]
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "default": "#ffffff"
         }
       ]
     }
@@ -90,13 +126,16 @@
 .custom-double-banner {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: var(--gap);
+  padding: var(--section-padding);
+  margin: var(--section-margin) auto;
 }
 
 .custom-double-banner .banner {
   position: relative;
   width: 100%;
   overflow: hidden;
+  background-color: var(--banner-bg);
 }
 
 .custom-double-banner .banner img {
@@ -132,9 +171,16 @@
 }
 {% endstylesheet %}
 
-<div class="custom-double-banner" style="--banner-height: {{ section.settings.section_height }}px; --banner-height-mobile: {{ section.settings.section_height_mobile }}px;">
+<div class="custom-double-banner"
+     style="
+      --gap: {{ section.settings.gap }}px;
+      --section-padding: {{ section.settings.section_padding }}px;
+      --section-margin: {{ section.settings.section_margin }}px;
+      --banner-height: {{ section.settings.section_height }}px;
+      --banner-height-mobile: {{ section.settings.section_height_mobile }}px;
+     ">
   {% for block in section.blocks %}
-    <div class="banner" style="height: var(--banner-height);">
+    <div class="banner" style="height: var(--banner-height); --banner-bg: {{ block.settings.background_color }};">
       {% if block.settings.banner_image != blank %}
         <img src="{{ block.settings.banner_image | img_url: '1200x' }}" alt="{{ block.settings.banner_title }}" style="height: 100%;">
       {% endif %}
