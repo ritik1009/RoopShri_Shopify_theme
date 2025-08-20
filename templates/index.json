@@ -259,7 +259,7 @@
         "aspect_width": 1,
         "aspect_height": 1,
         "enable_swiper_mobile": true,
-        "enable_swiper_desktop": true,
+        "enable_swiper_desktop": false,
         "show_arrows": true,
         "swiper_loop": false,
         "swiper_speed": 450,
