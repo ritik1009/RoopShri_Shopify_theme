@@ -1,0 +1,441 @@
+{% comment %}
+  Promo Banners Section
+  - Responsive grid (desktop row, tablet 2-col, mobile stack) with optional Swiper on mobile/desktop
+  - Each banner: image, overlay color/opacity, heading, subheading, CTA button, alignment, colors
+  - Premium hover + entrance animations (fade / slide-up / zoom / none)
+  - Spacing, gap, background, custom CSS class & custom CSS
+{% endcomment %}
+
+<section id="section-{{ section.id }}"
+  class="promo-banners {{ section.settings.custom_css_class }}"
+  style="
+    background-color: {{ section.settings.section_bg }};
+    padding-top: {{ section.settings.pad_top }}px;
+    padding-bottom: {{ section.settings.pad_bottom }}px;
+  "
+  data-swiper-desktop="{{ section.settings.enable_swiper_desktop }}"
+  data-swiper-mobile="{{ section.settings.enable_swiper_mobile }}"
+>
+  {% if section.settings.section_title != blank or section.settings.section_subtitle != blank %}
+    <div class="promo-banners__header promo-banners__header--{{ section.settings.title_align }}">
+      {% if section.settings.section_title != blank %}
+        <h2 class="promo-banners__title"
+            style="color: {{ section.settings.title_color }}; font-size: {{ section.settings.title_size }}px; font-weight: {{ section.settings.title_weight }};">
+          {{ section.settings.section_title }}
+        </h2>
+      {% endif %}
+      {% if section.settings.section_subtitle != blank %}
+        <p class="promo-banners__subtitle"
+           style="color: {{ section.settings.subtitle_color }}; font-size: {{ section.settings.subtitle_size }}px;">
+          {{ section.settings.section_subtitle }}
+        </p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {%- assign use_swiper = false -%}
+  {%- if section.settings.enable_swiper_mobile or section.settings.enable_swiper_desktop -%}
+    {%- assign use_swiper = true -%}
+  {%- endif -%}
+
+  <div class="promo-banners__container {% if use_swiper %}swiper-container-{{ section.id }}{% else %}grid-container{% endif %}"
+       style="--gap: {{ section.settings.card_gap }}px;">
+    <div class="promo-banners__list {% if use_swiper %}swiper-wrapper{% else %}grid{% endif %}"
+         style="
+          --cols-desktop: {{ section.settings.cols_desktop }};
+          --cols-tablet: {{ section.settings.cols_tablet }};
+          --card-radius: {{ section.settings.card_radius }}px;
+          --card-shadow: {% if section.settings.card_shadow %}0 8px 24px rgba(0,0,0,.08){% else %}none{% endif %};
+         ">
+      {% for block in section.blocks %}
+        {% assign img = block.settings.image %}
+        <div class="promo-banners__item {% if use_swiper %}swiper-slide{% endif %} anim--{{ block.settings.entry_animation }}"
+             {{ block.shopify_attributes }}>
+          <a class="promo-banners__card {% if section.settings.enable_hover %}card--hover{% endif %}"
+             href="{{ block.settings.button_link | default: '#' }}"
+             style="
+               border-radius: var(--card-radius);
+               box-shadow: var(--card-shadow);
+               height: auto;
+             ">
+            <div class="promo-banners__media"
+                 style="
+                   aspect-ratio: {{ section.settings.aspect_width }} / {{ section.settings.aspect_height }};
+                 ">
+              {% if img %}
+                <img
+                  src="{{ img | image_url: width: 2200 }}"
+                  srcset="
+                    {{ img | image_url: width: 600 }} 600w,
+                    {{ img | image_url: width: 900 }} 900w,
+                    {{ img | image_url: width: 1400 }} 1400w,
+                    {{ img | image_url: width: 2000 }} 2000w
+                  "
+                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, {{ 100 | divided_by: section.settings.cols_desktop | append: 'vw' }}"
+                  alt="{{ block.settings.heading | escape }}"
+                  loading="lazy"
+                  class="promo-banners__img"
+                >
+              {% else %}
+                <div class="promo-banners__placeholder"></div>
+              {% endif %}
+              <span class="promo-banners__overlay"
+                    style="background: {{ block.settings.overlay_color | default: '#000000' }};
+                           opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+                           border-radius: var(--card-radius);"></span>
+            </div>
+
+            <div class="promo-banners__content content--{{ block.settings.h_align }} contentv--{{ block.settings.v_align }}"
+                 style="max-width: {{ block.settings.content_max }}%; padding: {{ block.settings.content_pad }}px;">
+              {% if block.settings.badge != blank %}
+                <span class="promo-banners__badge"
+                      style="background: {{ block.settings.badge_bg }}; color: {{ block.settings.badge_color }};">
+                  {{ block.settings.badge }}
+                </span>
+              {% endif %}
+
+              {% if block.settings.heading != blank %}
+                <h3 class="promo-banners__heading"
+                    style="color: {{ block.settings.text_color }};
+                           font-size: {{ block.settings.heading_size }}px;
+                           font-weight: {{ block.settings.heading_weight }};">
+                  {{ block.settings.heading }}
+                </h3>
+              {% endif %}
+
+              {% if block.settings.subheading != blank %}
+                <p class="promo-banners__sub"
+                   style="color: {{ block.settings.text_color }};
+                          font-size: {{ block.settings.sub_size }}px;">
+                  {{ block.settings.subheading }}
+                </p>
+              {% endif %}
+
+              {% if block.settings.button_label != blank %}
+                <span class="promo-banners__btn btn--{{ block.settings.btn_style }}"
+                      style="
+                        --btn-bg: {{ block.settings.btn_bg }};
+                        --btn-color: {{ block.settings.btn_color }};
+                        --btn-bg-hover: {{ block.settings.btn_bg_hover }};
+                        --btn-color-hover: {{ block.settings.btn_color_hover }};
+                      ">
+                  {{ block.settings.button_label }}
+                </span>
+              {% endif %}
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if use_swiper %}
+      <div class="promo-banners__pagination-{{ section.id }}"></div>
+      {% if section.settings.show_arrows %}
+        <div class="promo-banners__nav promo-banners__nav--prev-{{ section.id }}" aria-label="Previous">&#10094;</div>
+        <div class="promo-banners__nav promo-banners__nav--next-{{ section.id }}" aria-label="Next">&#10095;</div>
+      {% endif %}
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  #section-{{ section.id }} .promo-banners__header { margin: 0 auto 24px; max-width: 1200px; padding: 0 16px; }
+  #section-{{ section.id }} .promo-banners__header--left   { text-align: left; }
+  #section-{{ section.id }} .promo-banners__header--center { text-align: center; }
+  #section-{{ section.id }} .promo-banners__header--right  { text-align: right; }
+
+  #section-{{ section.id }} .grid-container { max-width: {{ section.settings.max_width }}px; margin: 0 auto; padding: 0 16px; }
+  #section-{{ section.id }} .grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols-desktop), minmax(0, 1fr));
+    gap: var(--gap);
+    align-items: stretch;
+  }
+  @media (max-width: 1100px) {
+    #section-{{ section.id }} .grid { grid-template-columns: repeat(var(--cols-tablet), minmax(0, 1fr)); }
+  }
+  @media (max-width: 768px) {
+    #section-{{ section.id }} .grid { grid-template-columns: 1fr; }
+  }
+
+  #section-{{ section.id }} .promo-banners__list .swiper-slide { height: auto; }
+  #section-{{ section.id }} .promo-banners__item { position: relative; }
+
+  #section-{{ section.id }} .promo-banners__card {
+    position: relative; display: block; overflow: hidden; background: #f6f6f6;
+    transition: transform .35s ease, box-shadow .35s ease;
+  }
+  #section-{{ section.id }} .card--hover:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.10); }
+
+  #section-{{ section.id }} .promo-banners__media { position: relative; width: 100%; }
+  #section-{{ section.id }} .promo-banners__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #section-{{ section.id }} .promo-banners__overlay { position: absolute; inset: 0; pointer-events: none; }
+
+  #section-{{ section.id }} .promo-banners__content {
+    position: absolute; inset: 0; display: flex; flex-direction: column; gap: 8px;
+  }
+  #section-{{ section.id }} .content--left   { align-items: flex-start; text-align: left; padding-left: 24px; }
+  #section-{{ section.id }} .content--center { align-items: center; text-align: center; margin: 0 auto; }
+  #section-{{ section.id }} .content--right  { align-items: flex-end; text-align: right; padding-right: 24px; }
+  #section-{{ section.id }} .contentv--top    { justify-content: flex-start; }
+  #section-{{ section.id }} .contentv--middle { justify-content: center; }
+  #section-{{ section.id }} .contentv--bottom { justify-content: flex-end; }
+
+  #section-{{ section.id }} .promo-banners__badge {
+    display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 600;
+    letter-spacing: .02em; backdrop-filter: blur(3px);
+  }
+  #section-{{ section.id }} .promo-banners__heading { line-height: 1.2; margin: 0; }
+  #section-{{ section.id }} .promo-banners__sub { margin: 0; opacity: .9; }
+
+  #section-{{ section.id }} .promo-banners__btn {
+    margin-top: 6px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    border-radius: 999px; padding: 10px 16px; border: 1px solid transparent;
+    background: var(--btn-bg); color: var(--btn-color); transition: all .25s ease;
+    text-decoration: none; font-weight: 600; font-size: 14px;
+  }
+  #section-{{ section.id }} .btn--outline { background: transparent; color: var(--btn_color, currentColor); border-color: currentColor; }
+  #section-{{ section.id }} .btn--link { background: transparent; padding: 0; border: none; text-decoration: underline; }
+  #section-{{ section.id }} .promo-banners__card:hover .promo-banners__btn { background: var(--btn-bg-hover); color: var(--btn-color-hover); }
+
+  /* Placeholder */
+  #section-{{ section.id }} .promo-banners__placeholder { width: 100%; height: 100%; background: #e9e9e9; }
+
+  /* Navigation + pagination (only when Swiper is active) */
+  #section-{{ section.id }} .promo-banners__nav {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
+    width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(255,255,255,.9); box-shadow: 0 4px 18px rgba(0,0,0,.08); cursor: pointer; user-select: none;
+  }
+  #section-{{ section.id }} .promo-banners__nav--prev-{{ section.id }} { left: 8px; }
+  #section-{{ section.id }} .promo-banners__nav--next-{{ section.id }} { right: 8px; }
+  #section-{{ section.id }} .promo-banners__pagination-{{ section.id }} { margin-top: 14px; text-align: center; }
+
+  /* Entrance animations */
+  #section-{{ section.id }} .anim--fade   { opacity: 0; transform: translateY(0); }
+  #section-{{ section.id }} .anim--slide  { opacity: 0; transform: translateY(20px); }
+  #section-{{ section.id }} .anim--zoom   { opacity: 0; transform: scale(.96); }
+  #section-{{ section.id }} .anim--none   { opacity: 1; transform: none; }
+  #section-{{ section.id }} .animate-in   { opacity: 1 !important; transform: none !important; transition: all .6s cubic-bezier(.2,.6,.2,1); }
+
+  /* Adjust content padding on small screens */
+  @media (max-width: 768px) {
+    #section-{{ section.id }} .promo-banners__content { padding: 16px !important; }
+  }
+
+  {{ section.settings.custom_css }}
+</style>
+
+{% if use_swiper %}
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+{% endif %}
+
+<script>
+  (function() {
+    const root = document.getElementById('section-{{ section.id }}');
+    const mobile = root.dataset.swiperMobile === 'true';
+    const desktop = root.dataset.swiperDesktop === 'true';
+    const mq = window.matchMedia('(max-width: 768px)');
+
+    // Animate-in on view
+    const items = root.querySelectorAll('.promo-banners__item');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('animate-in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    items.forEach(el => io.observe(el));
+
+    // Initialize Swiper if toggled
+    function initSwiperIfNeeded() {
+      const shouldMobile = mobile && mq.matches;
+      const shouldDesktop = desktop && !mq.matches;
+
+      const containerSelector = '.swiper-container-{{ section.id }}';
+      const hasContainer = root.querySelector(containerSelector);
+
+      if (!hasContainer) return;
+
+      if (shouldMobile || shouldDesktop) {
+        if (window.Swiper) {
+          if (root._swiper) return; // already init
+          root._swiper = new Swiper(containerSelector, {
+            slidesPerView: {{ section.settings.swiper_slides }},
+            spaceBetween: {{ section.settings.card_gap }},
+            loop: {{ section.settings.swiper_loop }},
+            speed: {{ section.settings.swiper_speed }},
+            autoplay: {{ section.settings.autoplay_enable }} ? { delay: {{ section.settings.autoplay_delay }}, disableOnInteraction: true } : false,
+            pagination: { el: '.promo-banners__pagination-{{ section.id }}', clickable: true },
+            navigation: {
+              nextEl: '.promo-banners__nav--next-{{ section.id }}',
+              prevEl: '.promo-banners__nav--prev-{{ section.id }}'
+            },
+            breakpoints: {
+              769: { slidesPerView: {{ section.settings.swiper_slides_desktop }}, spaceBetween: {{ section.settings.card_gap }} }
+            }
+          });
+        } else {
+          // Load Swiper script once, then init
+          const s = document.createElement('script');
+          s.src = 'https://unpkg.com/swiper/swiper-bundle.min.js';
+          s.onload = initSwiperIfNeeded;
+          document.head.appendChild(s);
+        }
+      } else {
+        if (root._swiper && root._swiper.destroy) {
+          root._swiper.destroy(true, true);
+          root._swiper = null;
+        }
+      }
+    }
+
+    initSwiperIfNeeded();
+    mq.addEventListener ? mq.addEventListener('change', initSwiperIfNeeded) : mq.addListener(initSwiperIfNeeded);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Promo Banners",
+  "settings": [
+    { "type": "text", "id": "section_title", "label": "Section title", "default": "New Collection" },
+    { "type": "text", "id": "section_subtitle", "label": "Section subtitle", "default": "Subtitle" },
+    { "type": "select", "id": "title_align", "label": "Title alignment", "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#111111" },
+    { "type": "color", "id": "subtitle_color", "label": "Subtitle color", "default": "#555555" },
+    { "type": "range", "id": "title_size", "label": "Title font size (px)", "min": 16, "max": 48, "step": 1, "default": 30 },
+    { "type": "select", "id": "title_weight", "label": "Title weight", "default": "600",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    { "type": "range", "id": "subtitle_size", "label": "Subtitle font size (px)", "min": 12, "max": 22, "step": 1, "default": 14 },
+
+    { "type": "header", "content": "Layout & Grid" },
+    { "type": "range", "id": "cols_desktop", "label": "Banners per row (desktop)", "min": 1, "max": 4, "step": 1, "default": 2 },
+    { "type": "range", "id": "cols_tablet", "label": "Banners per row (tablet)", "min": 1, "max": 3, "step": 1, "default": 2 },
+    { "type": "range", "id": "card_gap", "label": "Gap between banners (px)", "min": 8, "max": 48, "step": 2, "default": 20 },
+    { "type": "range", "id": "card_radius", "label": "Card radius (px)", "min": 0, "max": 36, "step": 1, "default": 16 },
+    { "type": "checkbox", "id": "card_shadow", "label": "Enable card shadow", "default": true },
+    { "type": "checkbox", "id": "enable_hover", "label": "Hover lift/zoom effect", "default": true },
+    { "type": "range", "id": "max_width", "label": "Content max width (px)", "min": 960, "max": 1600, "step": 20, "default": 1200 },
+
+    { "type": "header", "content": "Aspect Ratio" },
+    { "type": "range", "id": "aspect_width", "label": "Aspect width", "min": 1, "max": 21, "step": 1, "default": 16 },
+    { "type": "range", "id": "aspect_height", "label": "Aspect height", "min": 1, "max": 12, "step": 1, "default": 9 },
+
+    { "type": "header", "content": "Slider (Swiper)" },
+    { "type": "checkbox", "id": "enable_swiper_mobile", "label": "Enable slider on mobile", "default": true },
+    { "type": "checkbox", "id": "enable_swiper_desktop", "label": "Enable slider on desktop", "default": false },
+    { "type": "checkbox", "id": "show_arrows", "label": "Show arrows (when slider active)", "default": true },
+    { "type": "checkbox", "id": "swiper_loop", "label": "Loop slides", "default": false },
+    { "type": "range", "id": "swiper_speed", "label": "Slide speed (ms)", "min": 200, "max": 1200, "step": 50, "default": 450 },
+    { "type": "range", "id": "swiper_slides", "label": "Slides per view (mobile)", "min": 1, "max": 3, "step": 1, "default": 1 },
+    { "type": "range", "id": "swiper_slides_desktop", "label": "Slides per view (desktop)", "min": 1, "max": 4, "step": 1, "default": 2 },
+    { "type": "checkbox", "id": "autoplay_enable", "label": "Autoplay", "default": false },
+    { "type": "range", "id": "autoplay_delay", "label": "Autoplay delay (ms)", "min": 1500, "max": 7000, "step": 100, "default": 3000 },
+
+    { "type": "header", "content": "Section Appearance" },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#ffffff" },
+    { "type": "range", "id": "pad_top", "label": "Padding top (px)", "min": 0, "max": 160, "step": 4, "default": 56 },
+    { "type": "range", "id": "pad_bottom", "label": "Padding bottom (px)", "min": 0, "max": 160, "step": 4, "default": 56 },
+
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "custom_css_class", "label": "Custom CSS class"},
+    { "type": "textarea", "id": "custom_css", "label": "Custom CSS" }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+
+        { "type": "text", "id": "badge", "label": "Badge (optional)", "default": "NEW COLLECTION" },
+        { "type": "color", "id": "badge_bg", "label": "Badge background", "default": "#ffffff" },
+        { "type": "color", "id": "badge_color", "label": "Badge text color", "default": "#111111" },
+
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Best Gold Filled Bracelet" },
+        { "type": "range", "id": "heading_size", "label": "Heading size (px)", "min": 14, "max": 48, "step": 1, "default": 28 },
+        { "type": "select", "id": "heading_weight", "label": "Heading weight", "default": "600",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semibold" },
+            { "value": "700", "label": "Bold" }
+          ]
+        },
+        { "type": "text", "id": "subheading", "label": "Subheading", "default": "Shop now" },
+        { "type": "range", "id": "sub_size", "label": "Subheading size (px)", "min": 10, "max": 24, "step": 1, "default": 14 },
+
+        { "type": "color", "id": "text_color", "label": "Text color", "default": "#111111" },
+
+        { "type": "select", "id": "h_align", "label": "Horizontal alignment", "default": "left",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ]
+        },
+        { "type": "select", "id": "v_align", "label": "Vertical alignment", "default": "middle",
+          "options": [
+            { "value": "top", "label": "Top" },
+            { "value": "middle", "label": "Middle" },
+            { "value": "bottom", "label": "Bottom" }
+          ]
+        },
+        { "type": "range", "id": "content_max", "label": "Max content width (%)", "min": 40, "max": 100, "step": 5, "default": 70 },
+        { "type": "range", "id": "content_pad", "label": "Content padding (px)", "min": 8, "max": 40, "step": 2, "default": 16 },
+
+        { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "rgba(255,255,255,0.0)" },
+        { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity (%)", "min": 0, "max": 100, "step": 5, "default": 10 },
+
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop Now" },
+        { "type": "url", "id": "button_link", "label": "Button link" },
+        { "type": "select", "id": "btn_style", "label": "Button style", "default": "solid",
+          "options": [
+            { "value": "solid", "label": "Solid" },
+            { "value": "outline", "label": "Outline" },
+            { "value": "link", "label": "Link" }
+          ]
+        },
+        { "type": "color", "id": "btn_bg", "label": "Button background", "default": "#111111" },
+        { "type": "color", "id": "btn_color", "label": "Button text color", "default": "#ffffff" },
+        { "type": "color", "id": "btn_bg_hover", "label": "Button hover background", "default": "#333333" },
+        { "type": "color", "id": "btn_color_hover", "label": "Button hover text color", "default": "#ffffff" },
+
+        { "type": "select", "id": "entry_animation", "label": "Entrance animation", "default": "fade",
+          "options": [
+            { "value": "fade", "label": "Fade" },
+            { "value": "slide", "label": "Slide up" },
+            { "value": "zoom", "label": "Zoom" },
+            { "value": "none", "label": "None" }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo Banners",
+      "category": "Banners",
+      "blocks": [
+        { "type": "banner" },
+        { "type": "banner" }
+      ]
+    }
+  ]
+}
+{% endschema %}
