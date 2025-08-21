@@ -342,11 +342,27 @@
                 });
               }
 
-              function destroySwiper() {
-               if (swiperInstance) {
-                try { swiperInstance.destroy(true, true); } catch(e) {}
-                swiperInstance = null;
-               }
+              
+function destroySwiper() {
+  if (swiperInstance) {
+    swiperInstance.destroy(true, true);
+    swiperInstance = null;
+  }
+
+  const container = root.querySelector('.cl-list');
+  const wrapper = container.querySelector('.cl-grid');
+
+  // Reset classes to grid mode
+  container.classList.remove('swiper');
+  wrapper.classList.remove('swiper-wrapper');
+  wrapper.querySelectorAll('.cl-item').forEach(i => {
+    i.classList.remove('swiper-slide');
+  });
+
+  // Add grid layout back
+  wrapper.classList.add('grid');
+  wrapper.classList.add('grid-cols-2', 'md:grid-cols-{{ section.settings.slides_per_row }}', 'gap-{{ section.settings.card_spacing }}');
+}
 
           // cleanup classes so grid mode works again
           const container = root.querySelector('.cl-list');
