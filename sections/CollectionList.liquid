@@ -233,173 +233,120 @@
 
   <!-- Swiper stylesheet loaded conditionally in JS when needed -->
   <script>
-            (function () {
-              const root = document.getElementById('collection-list-{{ section.id }}');
-              if (!root) return;
+(function () {
+  const root = document.getElementById('collection-list-{{ section.id }}');
+  if (!root) return;
 
-              const enableDesktop = root.dataset.enableSwiperDesktop === 'true';
-              const enableMobile = root.dataset.enableSwiperMobile === 'true';
-              const animation = root.dataset.animation || 'fade';
-              const gap = {{ section.settings.gap | json }};
-              const colsDesktop = {{ section.settings.cols_desktop | json }};
-              const colsTablet = {{ section.settings.cols_tablet | json }};
-              const colsMobile = {{ section.settings.cols_mobile | json }};
-              const autoplay = {% if section.settings.autoplay %}true{% else %}false{% endif %};
-              const autoplayDelay = {{ section.settings.autoplay_speed | default: 3000 }};
-              const loop = {% if section.settings.loop %}true{% else %}false{% endif %};
-              const showArrows = {% if section.settings.show_arrows %}true{% else %}false{% endif %};
-              const showDots = {{ section.settings.show_dots | json }};
-              const cardGap = {{ section.settings.gap }};
+  const enableDesktop = root.dataset.enableSwiperDesktop === 'true';
+  const enableMobile = root.dataset.enableSwiperMobile === 'true';
+  const colsDesktop = {{ section.settings.cols_desktop | json }};
+  const colsTablet = {{ section.settings.cols_tablet | json }};
+  const colsMobile = {{ section.settings.cols_mobile | json }};
+  const autoplay = {% if section.settings.autoplay %}true{% else %}false{% endif %};
+  const autoplayDelay = {{ section.settings.autoplay_speed | default: 3000 }};
+  const loop = {% if section.settings.loop %}true{% else %}false{% endif %};
+  const showArrows = {% if section.settings.show_arrows %}true{% else %}false{% endif %};
+  const showDots = {% if section.settings.show_dots %}true{% else %}false{% endif %};
+  const cardGap = {{ section.settings.gap | json }};
 
-              // IntersectionObserver for animations
-              const io = new IntersectionObserver((entries, obs) => {
-                entries.forEach(e => {
-                  if (e.isIntersecting) {
-                    e.target.classList.add('is-in');
-                    obs.unobserve(e.target);
-                  }
-                });
-              }, { threshold: 0.12 });
-              root.querySelectorAll('.cl-item').forEach(item => io.observe(item));
+  let swiperInstance = null;
+  const breakpoint = window.matchMedia('(min-width: 769px)');
 
-              // Utility to load script
-              function loadScript(src, cb) {
-                if (document.querySelector('script[src="'+src+'"]')) { cb(); return; }
-                const s = document.createElement('script'); s.src = src; s.async = true;
-                s.onload = cb; document.head.appendChild(s);
-              }
-
-              // Initialize/destroy Swiper depending on breakpoint & settings
-              let swiperInstance = null;
-              const swiperSelector = '#collection-list-{{ section.id }} .cl-list';
-              const breakpoint = window.matchMedia('(min-width: 769px)');
-
-              function shouldUseSwiper() {
-                if (breakpoint.matches) {
-                  return enableDesktop;
-                } else {
-                  return enableMobile;
-                }
-              }
-
-              function initSwiper() {
-  const container = root.querySelector('.cl-list');
-  const wrapper = container.querySelector('.cl-grid');
-
-  container.classList.add('swiper'); // container
-  wrapper.classList.add('swiper-wrapper'); // wrapper
-
-  wrapper.querySelectorAll('.cl-item').forEach(i => {
-    i.classList.add('swiper-slide');
-  });
-
-  swiperInstance = new Swiper(container, {
-    slidesPerView: colsMobile,
-    spaceBetween: cardGap,
-    loop,
-    autoplay: autoplay ? { delay: autoplayDelay, disableOnInteraction: true } : false,
-    pagination: showDots ? { el: ".cl-pagination", clickable: true } : false,
-    navigation: showArrows ? { nextEl: ".cl-arrow-next", prevEl: ".cl-arrow-prev" } : false,
-    breakpoints: {
-      769: { slidesPerView: colsTablet, spaceBetween: cardGap },
-      1024: { slidesPerView: colsDesktop, spaceBetween: cardGap }
-    }
-  });
-}
-
-              function createSwiper() {
-                if (swiperInstance) return;
-                // we expect .cl-list to be the swiper container
-                const container = root.querySelector('.cl-list');
-                container.classList.add('swiper-container');
-                const wrapper = container;
-                wrapper.querySelectorAll('.cl-item').forEach(i => i.classList.add('swiper-slide'));
-
-                swiperInstance = new Swiper(container, {
-                  slidesPerView: Math.max(1, colsMobile),
-                  spaceBetween: cardGap,
-                  loop: {{ section.settings.loop | json }},
-                  autoplay: {% if section.settings.autoplay %}{ delay: {{ section.settings.autoplay_speed }}, disableOnInteraction: true }{% else %}false{% endif %},
-                  pagination: {% if section.settings.show_dots %}{ el: ".cl-pagination", clickable: true }{% else %}false{% endif %},
-                  navigation: {% if section.settings.show_arrows %}{ nextEl: ".cl-arrow-next", prevEl: ".cl-arrow-prev" }{% else %}false{% endif %},
-
-                  breakpoints: {
-                    769: {
-                      slidesPerView: {{ section.settings.cols_desktop }},
-                      spaceBetween: cardGap
-                    },
-                    1100: {
-                      slidesPerView: {{ section.settings.cols_desktop }},
-                      spaceBetween: cardGap
-                    }
-                  }
-                });
-              }
-
-              
-function destroySwiper() {
-  if (swiperInstance) {
-    swiperInstance.destroy(true, true);
-    swiperInstance = null;
+  /** Utility: check if Swiper should be enabled */
+  function shouldUseSwiper() {
+    return breakpoint.matches ? enableDesktop : enableMobile;
   }
 
-  const container = root.querySelector('.cl-list');
-  const wrapper = container.querySelector('.cl-grid');
+  /** Initialize Swiper */
+  function initSwiper() {
+    const container = root.querySelector('.cl-list');
+    const wrapper = container.querySelector('.cl-grid');
 
-  container.classList.remove('swiper');
-  wrapper.classList.remove('swiper-wrapper');
-  wrapper.querySelectorAll('.cl-item').forEach(i => i.classList.remove('swiper-slide'));
+    // Add Swiper classes
+    container.classList.add('swiper');
+    wrapper.classList.add('swiper-wrapper');
+    wrapper.classList.remove('grid'); // remove grid mode
+    wrapper.querySelectorAll('.cl-item').forEach(i => i.classList.add('swiper-slide'));
 
-  wrapper.classList.add('grid', `grid-cols-${colsMobile}`, `md:grid-cols-${colsDesktop}`, `gap-${cardGap}`);
-}
+    swiperInstance = new Swiper(container, {
+      slidesPerView: colsMobile,
+      spaceBetween: cardGap,
+      loop: loop,
+      autoplay: autoplay ? { delay: autoplayDelay, disableOnInteraction: true } : false,
+      pagination: showDots ? { el: ".cl-pagination", clickable: true } : false,
+      navigation: showArrows ? { nextEl: ".cl-arrow-next", prevEl: ".cl-arrow-prev" } : false,
+      breakpoints: {
+        768: { slidesPerView: colsTablet, spaceBetween: cardGap },
+        1024: { slidesPerView: colsDesktop, spaceBetween: cardGap }
+      }
+    });
+  }
 
-          // cleanup classes so grid mode works again
-          const container = root.querySelector('.cl-list');
-          if (container) {
-            container.classList.remove('swiper', 'swiper-wrapper');
-            container.querySelectorAll('.cl-item').forEach(i => i.classList.remove('swiper-slide'));
-          }
-        }
+  /** Destroy Swiper → Reset back to grid */
+  function destroySwiper() {
+    if (swiperInstance) {
+      swiperInstance.destroy(true, true);
+      swiperInstance = null;
+    }
 
-              // Initial layout: when slider disabled on desktop, center grid content if fewer items than columns
-              function applyGridCentering() {
-                const list = root.querySelector('.cl-list');
-                if (!list) return;
-                if (!shouldUseSwiper()) {
-                  list.classList.remove('swiper-wrapper');
-                  list.classList.add('cl-grid');
-                  // If grid mode and we want center alignment and less items than cols, center them
-                  const items = list.querySelectorAll('.cl-item');
-                  const cols = breakpoint.matches ? {{ section.settings.cols_desktop }} : (window.innerWidth <= 768 ? {{ section.settings.cols_mobile }} : {{ section.settings.cols_tablet }});
-                  if (items.length < cols) {
-                    list.style.justifyContent = 'center';
-                  } else {
-                    list.style.justifyContent = '';
-                  }
-                }
-              }
+    const container = root.querySelector('.cl-list');
+    const wrapper = container.querySelector('.cl-grid, .swiper-wrapper');
 
-              // react to resize / breakpoint changes
-              function refresh() {
-          // always reset first
-          destroySwiper();
+    if (!wrapper) return;
 
-          if (shouldUseSwiper()) {
-            initSwiper();
-          } else {
-            applyGridCentering(); // handles non-slider layout
-          }
-        }
+    // Reset classes
+    container.classList.remove('swiper');
+    wrapper.classList.remove('swiper-wrapper');
+    wrapper.classList.add('grid');
 
-              // initial run
-              refresh();
+    // Remove swiper-slide class from items
+    wrapper.querySelectorAll('.cl-item').forEach(i => i.classList.remove('swiper-slide'));
 
-              // watchers
-              breakpoint.addEventListener ? breakpoint.addEventListener('change', refresh) : breakpoint.addListener(refresh);
-              window.addEventListener('resize', () => { setTimeout(refresh, 120); }, { passive: true });
+    // Restore Tailwind grid layout
+    wrapper.classList.add(
+      'grid-cols-2',
+      'md:grid-cols-' + colsTablet,
+      'lg:grid-cols-' + colsDesktop,
+      'gap-' + cardGap
+    );
+  }
 
-            })();
-  </script>
+  /** Apply centering for grid mode if fewer items than columns */
+  function applyGridCentering() {
+    const list = root.querySelector('.cl-grid');
+    if (!list) return;
+
+    const items = list.querySelectorAll('.cl-item');
+    const cols = breakpoint.matches ? colsDesktop : (window.innerWidth <= 768 ? colsMobile : colsTablet);
+
+    if (items.length < cols) {
+      list.style.justifyContent = 'center';
+    } else {
+      list.style.justifyContent = '';
+    }
+  }
+
+  /** Refresh function on resize / breakpoint */
+  function refresh() {
+    destroySwiper();
+
+    if (shouldUseSwiper()) {
+      initSwiper();
+    } else {
+      applyGridCentering();
+    }
+  }
+
+  /** Initial run */
+  refresh();
+
+  /** Listeners */
+  breakpoint.addEventListener ? breakpoint.addEventListener('change', refresh) : breakpoint.addListener(refresh);
+  window.addEventListener('resize', () => { setTimeout(refresh, 150); }, { passive: true });
+
+})();
+</script>
+
 
   {% schema %}
 {
