@@ -52,87 +52,85 @@
 
   {%- comment -%} Determine mode (we always render slides markup; JS chooses whether to init slider) {%- endcomment -%}
   <div
-    class="cl-container"
-    style="--gap: {{ section.settings.gap }}px; --card-size: {{ section.settings.image_size }}px;"
+  class="cl-container"
+  style="--gap: {{ section.settings.gap }}px; --card-size: {{ section.settings.image_size }}px;"
+>
+  <div
+    class="cl-list cl-grid"
+    style="
+      --cols-desktop: {{ section.settings.cols_desktop }};
+      --cols-tablet: {{ section.settings.cols_tablet }};
+      --cols-mobile: {{ section.settings.cols_mobile }};
+    "
   >
-    <div
-      class="cl-list {% if section.settings.enable_swiper_desktop or section.settings.enable_swiper_mobile %}swiper-wrapper{% else %}cl-grid{% endif %}"
-      style="
-        --cols-desktop: {{ section.settings.cols_desktop }};
-        --cols-tablet: {{ section.settings.cols_tablet }};
-        --cols-mobile: {{ section.settings.cols_mobile }};
-      "
-    >
-      {% for block in section.blocks %}
-        {% if block.type == 'collection_block' and block.settings.collection != blank %}
-          {% assign coll = collections[block.settings.collection] %}
-          <div class="cl-item {% if section.settings.enable_swiper_desktop or section.settings.enable_swiper_mobile %}swiper-slide{% endif %} anim--{{ section.settings.animation }}">
-            <a class="cl-card" href="{{ coll.url }}" aria-label="{{ coll.title | escape }}">
-              <div class="cl-media" style="width: var(--card-size); height: var(--card-size);">
-                {% comment %} Use collection image if available, else first product image, else placeholder {% endcomment %}
-                {% if block.settings.image != blank %}
+    {% for block in section.blocks %}
+      {% if block.type == 'collection_block' and block.settings.collection != blank %}
+        {% assign coll = collections[block.settings.collection] %}
+        <div class="cl-item anim--{{ section.settings.animation }}">
+          <a class="cl-card" href="{{ coll.url }}" aria-label="{{ coll.title | escape }}">
+            <div class="cl-media" style="width: var(--card-size); height: var(--card-size);">
+              {% if block.settings.image != blank %}
+                <img
+                  class="cl-img"
+                  src="{{ block.settings.image | image_url: width: 1200 }}"
+                  alt="{{ coll.title | escape }}"
+                  loading="lazy"
+                >
+              {% elsif coll.image %}
+                <img
+                  class="cl-img"
+                  src="{{ coll.image | image_url: width: 1200 }}"
+                  alt="{{ coll.title | escape }}"
+                  loading="lazy"
+                >
+              {% else %}
+                {% assign fallback = coll.products.first.featured_image %}
+                {% if fallback %}
                   <img
                     class="cl-img"
-                    src="{{ block.settings.image | image_url: width: 1200 }}"
-                    alt="{{ coll.title | escape }}"
-                    loading="lazy"
-                  >
-                {% elsif coll.image %}
-                  <img
-                    class="cl-img"
-                    src="{{ coll.image | image_url: width: 1200 }}"
+                    src="{{ fallback | image_url: width: 1200 }}"
                     alt="{{ coll.title | escape }}"
                     loading="lazy"
                   >
                 {% else %}
-                  {% assign fallback = coll.products.first.featured_image %}
-                  {% if fallback %}
-                    <img
-                      class="cl-img"
-                      src="{{ fallback | image_url: width: 1200 }}"
-                      alt="{{ coll.title | escape }}"
-                      loading="lazy"
-                    >
-                  {% else %}
-                    <div class="cl-placeholder" aria-hidden="true"></div>
-                  {% endif %}
+                  <div class="cl-placeholder" aria-hidden="true"></div>
                 {% endif %}
-                <span
-                  class="cl-overlay"
-                  style="background: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"
-                ></span>
-              </div>
+              {% endif %}
+              <span
+                class="cl-overlay"
+                style="background: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"
+              ></span>
+            </div>
 
-              <div class="cl-info" style="text-align: {{ section.settings.text_align }};">
-                {% if section.settings.show_collection_title %}
-                  <div
-                    class="cl-name"
-                    style="color: {{ section.settings.collection_title_color }}; font-size: {{ section.settings.collection_title_size }}px;"
-                  >
-                    {{ coll.title }}
-                  </div>
-                {% endif %}
+            <div class="cl-info" style="text-align: {{ section.settings.text_align }};">
+              {% if section.settings.show_collection_title %}
+                <div
+                  class="cl-name"
+                  style="color: {{ section.settings.collection_title_color }}; font-size: {{ section.settings.collection_title_size }}px;"
+                >
+                  {{ coll.title }}
+                </div>
+              {% endif %}
 
-                {% if section.settings.show_product_count %}
-                  <div class="cl-count" style="color: {{ section.settings.collection_count_color }};">
-                    ({{ coll.products_count }})
-                  </div>
-                {% endif %}
-              </div>
-            </a>
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
-
-    {% if section.settings.enable_swiper_desktop or section.settings.enable_swiper_mobile %}
-      <div class="cl-pagination cl-pagination-{{ section.id }}"></div>
-      {% if section.settings.show_arrows %}
-        <button class="cl-arrow cl-arrow-prev cl-arrow-prev-{{ section.id }}" aria-label="Previous">&#10094;</button>
-        <button class="cl-arrow cl-arrow-next cl-arrow-next-{{ section.id }}" aria-label="Next">&#10095;</button>
+              {% if section.settings.show_product_count %}
+                <div class="cl-count" style="color: {{ section.settings.collection_count_color }};">
+                  ({{ coll.products_count }})
+                </div>
+              {% endif %}
+            </div>
+          </a>
+        </div>
       {% endif %}
-    {% endif %}
+    {% endfor %}
   </div>
+
+  <div class="cl-pagination cl-pagination-{{ section.id }}"></div>
+  {% if section.settings.show_arrows %}
+    <button class="cl-arrow cl-arrow-prev cl-arrow-prev-{{ section.id }}" aria-label="Previous">&#10094;</button>
+    <button class="cl-arrow cl-arrow-next cl-arrow-next-{{ section.id }}" aria-label="Next">&#10095;</button>
+  {% endif %}
+</div>
+
 
   <style>
     /* Base */
