@@ -350,16 +350,11 @@ function destroySwiper() {
   const container = root.querySelector('.cl-list');
   const wrapper = container.querySelector('.cl-grid');
 
-  // Reset classes to grid mode
   container.classList.remove('swiper');
   wrapper.classList.remove('swiper-wrapper');
-  wrapper.querySelectorAll('.cl-item').forEach(i => {
-    i.classList.remove('swiper-slide');
-  });
+  wrapper.querySelectorAll('.cl-item').forEach(i => i.classList.remove('swiper-slide'));
 
-  // Add grid layout back
-  wrapper.classList.add('grid');
-  wrapper.classList.add('grid-cols-2', 'md:grid-cols-{{ section.settings.slides_per_row }}', 'gap-{{ section.settings.card_spacing }}');
+  wrapper.classList.add('grid', `grid-cols-${colsMobile}`, `md:grid-cols-${colsDesktop}`, `gap-${cardGap}`);
 }
 
           // cleanup classes so grid mode works again
