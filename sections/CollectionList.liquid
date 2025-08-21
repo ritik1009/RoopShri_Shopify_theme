@@ -295,16 +295,18 @@
       }
 
       function destroySwiper() {
-        if (!swiperInstance) return;
+       if (swiperInstance) {
         try { swiperInstance.destroy(true, true); } catch(e) {}
-        swiperInstance = null;
-        // cleanup classes
-        const container = root.querySelector('.cl-list');
-        if (container) {
-          container.classList.remove('swiper-container');
-          container.querySelectorAll('.cl-item').forEach(i => i.classList.remove('swiper-slide'));
-        }
-      }
+         swiperInstance = null;
+  }
+
+  // cleanup classes so grid mode works again
+  const container = root.querySelector('.cl-list');
+  if (container) {
+    container.classList.remove('swiper', 'swiper-wrapper');
+    container.querySelectorAll('.cl-item').forEach(i => i.classList.remove('swiper-slide'));
+  }
+}
 
       // Initial layout: when slider disabled on desktop, center grid content if fewer items than columns
       function applyGridCentering() {
