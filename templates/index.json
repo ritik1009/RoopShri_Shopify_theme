@@ -89,58 +89,6 @@
         "accessibility_info": "Slideshow about our brand"
       }
     },
-    "collection_list_PhFXde": {
-      "type": "collection-list",
-      "blocks": {
-        "featured_collection_hePRJz": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": "bangles"
-          }
-        },
-        "featured_collection_798DdW": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": "fancy-earring"
-          }
-        },
-        "featured_collection_EcHenU": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": "jewelry-sets"
-          }
-        },
-        "featured_collection_qz4Fqn": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": "rings"
-          }
-        }
-      },
-      "block_order": [
-        "featured_collection_hePRJz",
-        "featured_collection_798DdW",
-        "featured_collection_EcHenU",
-        "featured_collection_qz4Fqn"
-      ],
-      "custom_css": [
-        ".card--standard .card__inner,.card .card__inner .card__media {border-radius: 100% !important;}",
-        ".card__heading .full-unstyled-link {text-align: center;}"
-      ],
-      "name": "t:sections.collection-list.presets.name",
-      "settings": {
-        "title": "Collections",
-        "heading_size": "h2",
-        "image_ratio": "square",
-        "columns_desktop": 6,
-        "color_scheme": "",
-        "show_view_all": false,
-        "columns_mobile": "2",
-        "swipe_on_mobile": true,
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "featured_collection": {
       "type": "featured-collection",
       "custom_css": [
@@ -353,7 +301,7 @@
         "card_shadow": true,
         "aspect_w": 1,
         "aspect_h": 1,
-        "overlay_color": "rgba(0,0,0,0.0)",
+        "overlay_color": "rgba(0,0,0,0)",
         "overlay_opacity": 0,
         "hover_swap": true,
         "hover_zoom": true,
@@ -385,14 +333,97 @@
         "custom_css_class": "",
         "custom_css": ""
       }
+    },
+    "collection_list_EajTDy": {
+      "type": "CollectionList",
+      "blocks": {
+        "collection_block_9qtjjP": {
+          "type": "collection_block",
+          "settings": {
+            "collection": "bangles",
+            "image": "shopify://shop_images/product-1-4.webp",
+            "overlay_color": "rgba(255,255,255,0.0)",
+            "overlay_opacity": 0
+          }
+        },
+        "collection_block_Urq8Ti": {
+          "type": "collection_block",
+          "settings": {
+            "collection": "bangles",
+            "image": "shopify://shop_images/product-1-2.webp",
+            "overlay_color": "rgba(255,255,255,0.0)",
+            "overlay_opacity": 0
+          }
+        },
+        "collection_block_VVMarC": {
+          "type": "collection_block",
+          "settings": {
+            "collection": "jewelry-sets",
+            "overlay_color": "rgba(255,255,255,0.0)",
+            "overlay_opacity": 0
+          }
+        },
+        "collection_block_6NTQtJ": {
+          "type": "collection_block",
+          "settings": {
+            "collection": "rings",
+            "overlay_color": "rgba(255,255,255,0.0)",
+            "overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "collection_block_9qtjjP",
+        "collection_block_Urq8Ti",
+        "collection_block_VVMarC",
+        "collection_block_6NTQtJ"
+      ],
+      "name": "Collection list (slider toggle)",
+      "settings": {
+        "title": "Popular Categories",
+        "title_align": "center",
+        "title_color": "#111111",
+        "subtitle": "",
+        "subtitle_color": "#6b7280",
+        "title_size": 28,
+        "cols_desktop": 4,
+        "cols_tablet": 4,
+        "cols_mobile": 2,
+        "image_size": 144,
+        "enable_swiper_desktop": false,
+        "enable_swiper_mobile": true,
+        "show_arrows": true,
+        "show_dots": true,
+        "autoplay": false,
+        "autoplay_speed": 3000,
+        "loop": false,
+        "gap": 24,
+        "hover_zoom": true,
+        "card_shadow": true,
+        "background_color": "#ffffff",
+        "show_collection_title": true,
+        "collection_title_size": 13,
+        "collection_title_color": "#111111",
+        "show_product_count": true,
+        "collection_count_color": "#6b7280",
+        "text_align": "center",
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "max_width": 1200,
+        "animation": "slide",
+        "custom_css_class": "",
+        "custom_css": ""
+      }
     }
   },
   "order": [
     "slideshow_YeD8yj",
-    "collection_list_PhFXde",
     "featured_collection",
     "promo_banners_XUjYxb",
     "image_banner_9mzAjV",
-    "collection_toggle_8D4K6n"
+    "collection_toggle_8D4K6n",
+    "collection_list_EajTDy"
   ]
 }
