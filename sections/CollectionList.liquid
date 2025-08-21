@@ -283,33 +283,29 @@
               }
 
               function initSwiper() {
-                const container = root.querySelector('.cl-list');
-                const wrapper = container.querySelector('.cl-grid');
+  const container = root.querySelector('.cl-list');
+  const wrapper = container.querySelector('.cl-grid');
 
-                // Reset classes to Swiper mode
-                container.classList.add('swiper');
-                container.classList.remove('grid');
+  container.classList.add('swiper'); // container
+  wrapper.classList.add('swiper-wrapper'); // wrapper
 
-                wrapper.classList.add('swiper-wrapper');
-                wrapper.classList.remove('grid-cols-2', 'grid-cols-3', 'grid-cols-4'); // remove grid-specific classes
+  wrapper.querySelectorAll('.cl-item').forEach(i => {
+    i.classList.add('swiper-slide');
+  });
 
-                wrapper.querySelectorAll('.cl-item').forEach(i => {
-                  i.classList.add('swiper-slide');
-                });
-
-                swiperInstance = new Swiper(container, {
-                  slidesPerView: {{ section.settings.slides_per_view }},
-                  spaceBetween: {{ section.settings.card_spacing }},
-                  loop: {{ section.settings.loop | json }},
-                  autoplay: {% if section.settings.autoplay %}{ delay: {{ section.settings.autoplay_speed }}, disableOnInteraction: true }{% else %}false{% endif %},
-                  pagination: {% if section.settings.show_dots %}{ el: ".cl-pagination", clickable: true }{% else %}false{% endif %},
-                  navigation: {% if section.settings.show_arrows %}{ nextEl: ".cl-arrow-next", prevEl: ".cl-arrow-prev" }{% else %}false{% endif %},
-                  breakpoints: {
-                    768: { slidesPerView: 2 },
-                    1024: { slidesPerView: {{ section.settings.slides_per_row }} }
-                  }
-                });
-              }
+  swiperInstance = new Swiper(container, {
+    slidesPerView: colsMobile,
+    spaceBetween: cardGap,
+    loop,
+    autoplay: autoplay ? { delay: autoplayDelay, disableOnInteraction: true } : false,
+    pagination: showDots ? { el: ".cl-pagination", clickable: true } : false,
+    navigation: showArrows ? { nextEl: ".cl-arrow-next", prevEl: ".cl-arrow-prev" } : false,
+    breakpoints: {
+      769: { slidesPerView: colsTablet, spaceBetween: cardGap },
+      1024: { slidesPerView: colsDesktop, spaceBetween: cardGap }
+    }
+  });
+}
 
               function createSwiper() {
                 if (swiperInstance) return;
