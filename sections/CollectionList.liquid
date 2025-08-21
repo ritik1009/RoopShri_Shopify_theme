@@ -252,18 +252,21 @@
       }
 
       function initSwiper() {
-        if (!shouldUseSwiper()) return destroySwiper();
-        if (window.Swiper) return createSwiper();
+  const container = root.querySelector('.cl-list');
 
-        // load CSS + JS then init
-        if (!document.querySelector('link[href="https://unpkg.com/swiper/swiper-bundle.min.css"]')) {
-          const l = document.createElement('link');
-          l.rel = 'stylesheet';
-          l.href = 'https://unpkg.com/swiper/swiper-bundle.min.css';
-          document.head.appendChild(l);
-        }
-        loadScript('https://unpkg.com/swiper/swiper-bundle.min.js', createSwiper);
-      }
+  // Ensure swiper classes exist before initializing
+  if (container) {
+    container.classList.add('swiper');
+    container.classList.remove('grid'); // remove grid if applied
+
+    const wrapper = container.querySelector('.cl-grid');
+    if (wrapper) {
+      wrapper.classList.add('swiper-wrapper');
+      wrapper.querySelectorAll('.cl-item').forEach(i => {
+        i.classList.add('swiper-slide');
+      });
+    }
+  }
 
       function createSwiper() {
         if (swiperInstance) return;
