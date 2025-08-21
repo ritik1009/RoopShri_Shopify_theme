@@ -15,26 +15,34 @@
   - Uses Swiper for slider behavior (load via CDN when needed)
 {% endcomment %}
 
-<section id="collection-list-{{ section.id }}" class="cl-section {{ section.settings.custom_css_class }}"
-         style="
-           background: {{ section.settings.background_color }};
-           padding-top: {{ section.settings.padding_top }}px;
-           padding-bottom: {{ section.settings.padding_bottom }}px;
-           margin-top: {{ section.settings.margin_top }}px;
-           margin-bottom: {{ section.settings.margin_bottom }}px;
-         "
-         data-enable-swiper-desktop="{{ section.settings.enable_swiper_desktop }}"
-         data-enable-swiper-mobile="{{ section.settings.enable_swiper_mobile }}"
-         data-animation="{{ section.settings.animation }}"
+<section
+  id="collection-list-{{ section.id }}"
+  class="cl-section {{ section.settings.custom_css_class }}"
+  style="
+    background: {{ section.settings.background_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    margin-top: {{ section.settings.margin_top }}px;
+    margin-bottom: {{ section.settings.margin_bottom }}px;
+  "
+  data-enable-swiper-desktop="{{ section.settings.enable_swiper_desktop }}"
+  data-enable-swiper-mobile="{{ section.settings.enable_swiper_mobile }}"
+  data-animation="{{ section.settings.animation }}"
 >
   <div class="cl-inner" style="max-width: {{ section.settings.max_width }}px;">
     {% if section.settings.title != blank %}
       <div class="cl-header cl-header--{{ section.settings.title_align }}">
-        <h2 class="cl-title" style="color: {{ section.settings.title_color }}; font-size: {{ section.settings.title_size }}px;">
+        <h2
+          class="cl-title"
+          style="color: {{ section.settings.title_color }}; font-size: {{ section.settings.title_size }}px;"
+        >
           {{ section.settings.title }}
         </h2>
         {% if section.settings.subtitle != blank %}
-          <p class="cl-subtitle" style="color: {{ section.settings.subtitle_color }}; font-size: {{ section.settings.subtitle_size }}px;">
+          <p
+            class="cl-subtitle"
+            style="color: {{ section.settings.subtitle_color }}; font-size: {{ section.settings.subtitle_size }}px;"
+          >
             {{ section.settings.subtitle }}
           </p>
         {% endif %}
@@ -43,14 +51,18 @@
   </div>
 
   {%- comment -%} Determine mode (we always render slides markup; JS chooses whether to init slider) {%- endcomment -%}
-  <div class="cl-container" style="--gap: {{ section.settings.gap }}px; --card-size: {{ section.settings.image_size }}px;">
-    <div class="cl-list {% if section.settings.enable_swiper_desktop or section.settings.enable_swiper_mobile %}swiper-wrapper{% else %}cl-grid{% endif %}"
-         style="
-           --cols-desktop: {{ section.settings.cols_desktop }};
-           --cols-tablet: {{ section.settings.cols_tablet }};
-           --cols-mobile: {{ section.settings.cols_mobile }};
-         ">
-
+  <div
+    class="cl-container"
+    style="--gap: {{ section.settings.gap }}px; --card-size: {{ section.settings.image_size }}px;"
+  >
+    <div
+      class="cl-list {% if section.settings.enable_swiper_desktop or section.settings.enable_swiper_mobile %}swiper-wrapper{% else %}cl-grid{% endif %}"
+      style="
+        --cols-desktop: {{ section.settings.cols_desktop }};
+        --cols-tablet: {{ section.settings.cols_tablet }};
+        --cols-mobile: {{ section.settings.cols_mobile }};
+      "
+    >
       {% for block in section.blocks %}
         {% if block.type == 'collection_block' and block.settings.collection != blank %}
           {% assign coll = collections[block.settings.collection] %}
@@ -59,23 +71,44 @@
               <div class="cl-media" style="width: var(--card-size); height: var(--card-size);">
                 {% comment %} Use collection image if available, else first product image, else placeholder {% endcomment %}
                 {% if block.settings.image != blank %}
-                  <img class="cl-img" src="{{ block.settings.image | image_url: width: 1200 }}" alt="{{ coll.title | escape }}" loading="lazy">
+                  <img
+                    class="cl-img"
+                    src="{{ block.settings.image | image_url: width: 1200 }}"
+                    alt="{{ coll.title | escape }}"
+                    loading="lazy"
+                  >
                 {% elsif coll.image %}
-                  <img class="cl-img" src="{{ coll.image | image_url: width: 1200 }}" alt="{{ coll.title | escape }}" loading="lazy">
+                  <img
+                    class="cl-img"
+                    src="{{ coll.image | image_url: width: 1200 }}"
+                    alt="{{ coll.title | escape }}"
+                    loading="lazy"
+                  >
                 {% else %}
                   {% assign fallback = coll.products.first.featured_image %}
                   {% if fallback %}
-                    <img class="cl-img" src="{{ fallback | image_url: width: 1200 }}" alt="{{ coll.title | escape }}" loading="lazy">
+                    <img
+                      class="cl-img"
+                      src="{{ fallback | image_url: width: 1200 }}"
+                      alt="{{ coll.title | escape }}"
+                      loading="lazy"
+                    >
                   {% else %}
                     <div class="cl-placeholder" aria-hidden="true"></div>
                   {% endif %}
                 {% endif %}
-                <span class="cl-overlay" style="background: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"></span>
+                <span
+                  class="cl-overlay"
+                  style="background: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"
+                ></span>
               </div>
 
               <div class="cl-info" style="text-align: {{ section.settings.text_align }};">
                 {% if section.settings.show_collection_title %}
-                  <div class="cl-name" style="color: {{ section.settings.collection_title_color }}; font-size: {{ section.settings.collection_title_size }}px;">
+                  <div
+                    class="cl-name"
+                    style="color: {{ section.settings.collection_title_color }}; font-size: {{ section.settings.collection_title_size }}px;"
+                  >
                     {{ coll.title }}
                   </div>
                 {% endif %}
@@ -202,238 +235,366 @@
 
   <!-- Swiper stylesheet loaded conditionally in JS when needed -->
   <script>
-    (function () {
-      const root = document.getElementById('collection-list-{{ section.id }}');
-      if (!root) return;
+        (function () {
+          const root = document.getElementById('collection-list-{{ section.id }}');
+          if (!root) return;
 
-      const enableDesktop = root.dataset.enableSwiperDesktop === 'true';
-      const enableMobile = root.dataset.enableSwiperMobile === 'true';
-      const animation = root.dataset.animation || 'fade';
-      const gap = {{ section.settings.gap | json }};
-      const colsDesktop = {{ section.settings.cols_desktop | json }};
-      const colsTablet = {{ section.settings.cols_tablet | json }};
-      const colsMobile = {{ section.settings.cols_mobile | json }};
-      const autoplay = {% if section.settings.autoplay %}true{% else %}false{% endif %};
-      const autoplayDelay = {{ section.settings.autoplay_speed | default: 3000 }};
-      const loop = {% if section.settings.loop %}true{% else %}false{% endif %};
-      const showArrows = {% if section.settings.show_arrows %}true{% else %}false{% endif %};
-      const showDots = {{ section.settings.show_dots | json }};
-      const cardGap = {{ section.settings.gap }};
+          const enableDesktop = root.dataset.enableSwiperDesktop === 'true';
+          const enableMobile = root.dataset.enableSwiperMobile === 'true';
+          const animation = root.dataset.animation || 'fade';
+          const gap = {{ section.settings.gap | json }};
+          const colsDesktop = {{ section.settings.cols_desktop | json }};
+          const colsTablet = {{ section.settings.cols_tablet | json }};
+          const colsMobile = {{ section.settings.cols_mobile | json }};
+          const autoplay = {% if section.settings.autoplay %}true{% else %}false{% endif %};
+          const autoplayDelay = {{ section.settings.autoplay_speed | default: 3000 }};
+          const loop = {% if section.settings.loop %}true{% else %}false{% endif %};
+          const showArrows = {% if section.settings.show_arrows %}true{% else %}false{% endif %};
+          const showDots = {{ section.settings.show_dots | json }};
+          const cardGap = {{ section.settings.gap }};
 
-      // IntersectionObserver for animations
-      const io = new IntersectionObserver((entries, obs) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            e.target.classList.add('is-in');
-            obs.unobserve(e.target);
+          // IntersectionObserver for animations
+          const io = new IntersectionObserver((entries, obs) => {
+            entries.forEach(e => {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-in');
+                obs.unobserve(e.target);
+              }
+            });
+          }, { threshold: 0.12 });
+          root.querySelectorAll('.cl-item').forEach(item => io.observe(item));
+
+          // Utility to load script
+          function loadScript(src, cb) {
+            if (document.querySelector('script[src="'+src+'"]')) { cb(); return; }
+            const s = document.createElement('script'); s.src = src; s.async = true;
+            s.onload = cb; document.head.appendChild(s);
           }
-        });
-      }, { threshold: 0.12 });
-      root.querySelectorAll('.cl-item').forEach(item => io.observe(item));
 
-      // Utility to load script
-      function loadScript(src, cb) {
-        if (document.querySelector('script[src="'+src+'"]')) { cb(); return; }
-        const s = document.createElement('script'); s.src = src; s.async = true;
-        s.onload = cb; document.head.appendChild(s);
-      }
+          // Initialize/destroy Swiper depending on breakpoint & settings
+          let swiperInstance = null;
+          const swiperSelector = '#collection-list-{{ section.id }} .cl-list';
+          const breakpoint = window.matchMedia('(min-width: 769px)');
 
-      // Initialize/destroy Swiper depending on breakpoint & settings
-      let swiperInstance = null;
-      const swiperSelector = '#collection-list-{{ section.id }} .cl-list';
-      const breakpoint = window.matchMedia('(min-width: 769px)');
-
-      function shouldUseSwiper() {
-        if (breakpoint.matches) {
-          return enableDesktop;
-        } else {
-          return enableMobile;
-        }
-      }
-
-      function initSwiper() {
-  const container = root.querySelector('.cl-list');
-
-  // Ensure swiper classes exist before initializing
-  if (container) {
-    container.classList.add('swiper');
-    container.classList.remove('grid'); // remove grid if applied
-
-    const wrapper = container.querySelector('.cl-grid');
-    if (wrapper) {
-      wrapper.classList.add('swiper-wrapper');
-      wrapper.querySelectorAll('.cl-item').forEach(i => {
-        i.classList.add('swiper-slide');
-      });
-    }
-  }
-  
-
-      function createSwiper() {
-        if (swiperInstance) return;
-        // we expect .cl-list to be the swiper container
-        const container = root.querySelector('.cl-list');
-        container.classList.add('swiper-container');
-        const wrapper = container;
-        wrapper.querySelectorAll('.cl-item').forEach(i => i.classList.add('swiper-slide'));
-
-        swiperInstance = new Swiper(container, {
-          slidesPerView: Math.max(1, colsMobile),
-          spaceBetween: cardGap,
-          loop: {{ section.settings.loop | json }},
-          autoplay: {% if section.settings.autoplay %}{ delay: {{ section.settings.autoplay_speed }}, disableOnInteraction: true }{% else %}false{% endif %},
-          pagination: {% if section.settings.show_dots %}{ el: ".cl-pagination", clickable: true }{% else %}false{% endif %},
-          navigation: {% if section.settings.show_arrows %}{ nextEl: ".cl-arrow-next", prevEl: ".cl-arrow-prev" }{% else %}false{% endif %},
-
-          breakpoints: {
-            769: {
-              slidesPerView: {{ section.settings.cols_desktop }},
-              spaceBetween: cardGap
-            },
-            1100: {
-              slidesPerView: {{ section.settings.cols_desktop }},
-              spaceBetween: cardGap
+          function shouldUseSwiper() {
+            if (breakpoint.matches) {
+              return enableDesktop;
+            } else {
+              return enableMobile;
             }
           }
-        });
-      }
 
-      function destroySwiper() {
-       if (swiperInstance) {
-        try { swiperInstance.destroy(true, true); } catch(e) {}
-        swiperInstance = null;
-       }
+          function initSwiper() {
+            const container = root.querySelector('.cl-list');
 
-  // cleanup classes so grid mode works again
-  const container = root.querySelector('.cl-list');
-  if (container) {
-    container.classList.remove('swiper', 'swiper-wrapper');
-    container.querySelectorAll('.cl-item').forEach(i => i.classList.remove('swiper-slide'));
-  }
-}
-
-      // Initial layout: when slider disabled on desktop, center grid content if fewer items than columns
-      function applyGridCentering() {
-        const list = root.querySelector('.cl-list');
-        if (!list) return;
-        if (!shouldUseSwiper()) {
-          list.classList.remove('swiper-wrapper');
-          list.classList.add('cl-grid');
-          // If grid mode and we want center alignment and less items than cols, center them
-          const items = list.querySelectorAll('.cl-item');
-          const cols = breakpoint.matches ? {{ section.settings.cols_desktop }} : (window.innerWidth <= 768 ? {{ section.settings.cols_mobile }} : {{ section.settings.cols_tablet }});
-          if (items.length < cols) {
-            list.style.justifyContent = 'center';
-          } else {
-            list.style.justifyContent = '';
+            // Ensure swiper classes exist before initializing
+            if (container) {
+              container.classList.add('swiper');
+              container.classList.remove('grid'); // remove grid if applied
+            
+              const wrapper = container.querySelector('.cl-grid');
+              if (wrapper) {
+                wrapper.classList.add('swiper-wrapper');
+                wrapper.querySelectorAll('.cl-item').forEach(i => {
+                  i.classList.add('swiper-slide');
+                });
+              }
+            }
+            swiperInstance = new Swiper(container, {
+              slidesPerView: {{ section.settings.slides_per_view }},
+              spaceBetween: {{ section.settings.card_spacing }},
+              loop: {{ section.settings.loop | json }},
+              autoplay: {% if section.settings.autoplay %}{ delay: {{ section.settings.autoplay_speed }}, disableOnInteraction: true }{% else %}false{% endif %},
+              pagination: {% if section.settings.show_dots %}{ el: ".cl-pagination", clickable: true }{% else %}false{% endif %},
+              navigation: {% if section.settings.show_arrows %}{ nextEl: ".cl-arrow-next", prevEl: ".cl-arrow-prev" }{% else %}false{% endif %},
+              breakpoints: {
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: {{ section.settings.slides_per_row }} }
+              }
+            });
           }
-        }
+
+          function createSwiper() {
+            if (swiperInstance) return;
+            // we expect .cl-list to be the swiper container
+            const container = root.querySelector('.cl-list');
+            container.classList.add('swiper-container');
+            const wrapper = container;
+            wrapper.querySelectorAll('.cl-item').forEach(i => i.classList.add('swiper-slide'));
+
+            swiperInstance = new Swiper(container, {
+              slidesPerView: Math.max(1, colsMobile),
+              spaceBetween: cardGap,
+              loop: {{ section.settings.loop | json }},
+              autoplay: {% if section.settings.autoplay %}{ delay: {{ section.settings.autoplay_speed }}, disableOnInteraction: true }{% else %}false{% endif %},
+              pagination: {% if section.settings.show_dots %}{ el: ".cl-pagination", clickable: true }{% else %}false{% endif %},
+              navigation: {% if section.settings.show_arrows %}{ nextEl: ".cl-arrow-next", prevEl: ".cl-arrow-prev" }{% else %}false{% endif %},
+
+              breakpoints: {
+                769: {
+                  slidesPerView: {{ section.settings.cols_desktop }},
+                  spaceBetween: cardGap
+                },
+                1100: {
+                  slidesPerView: {{ section.settings.cols_desktop }},
+                  spaceBetween: cardGap
+                }
+              }
+            });
+          }
+
+          function destroySwiper() {
+           if (swiperInstance) {
+            try { swiperInstance.destroy(true, true); } catch(e) {}
+            swiperInstance = null;
+           }
+
+      // cleanup classes so grid mode works again
+      const container = root.querySelector('.cl-list');
+      if (container) {
+        container.classList.remove('swiper', 'swiper-wrapper');
+        container.querySelectorAll('.cl-item').forEach(i => i.classList.remove('swiper-slide'));
       }
+    }
 
-      // react to resize / breakpoint changes
-      function refresh() {
-  // always reset first
-  destroySwiper();
+          // Initial layout: when slider disabled on desktop, center grid content if fewer items than columns
+          function applyGridCentering() {
+            const list = root.querySelector('.cl-list');
+            if (!list) return;
+            if (!shouldUseSwiper()) {
+              list.classList.remove('swiper-wrapper');
+              list.classList.add('cl-grid');
+              // If grid mode and we want center alignment and less items than cols, center them
+              const items = list.querySelectorAll('.cl-item');
+              const cols = breakpoint.matches ? {{ section.settings.cols_desktop }} : (window.innerWidth <= 768 ? {{ section.settings.cols_mobile }} : {{ section.settings.cols_tablet }});
+              if (items.length < cols) {
+                list.style.justifyContent = 'center';
+              } else {
+                list.style.justifyContent = '';
+              }
+            }
+          }
 
-  if (shouldUseSwiper()) {
-    initSwiper();
-  } else {
-    applyGridCentering(); // handles non-slider layout
-  }
-}
+          // react to resize / breakpoint changes
+          function refresh() {
+      // always reset first
+      destroySwiper();
 
-      // initial run
-      refresh();
+      if (shouldUseSwiper()) {
+        initSwiper();
+      } else {
+        applyGridCentering(); // handles non-slider layout
+      }
+    }
 
-      // watchers
-      breakpoint.addEventListener ? breakpoint.addEventListener('change', refresh) : breakpoint.addListener(refresh);
-      window.addEventListener('resize', () => { setTimeout(refresh, 120); }, { passive: true });
+          // initial run
+          refresh();
 
-    })();
+          // watchers
+          breakpoint.addEventListener ? breakpoint.addEventListener('change', refresh) : breakpoint.addListener(refresh);
+          window.addEventListener('resize', () => { setTimeout(refresh, 120); }, { passive: true });
+
+        })();
   </script>
 
   {% schema %}
-  {
-    "name": "Collection List To",
-    "settings": [
-      { "type": "text", "id": "title", "label": "Section title", "default": "Popular Categories" },
-      { "type": "select", "id": "title_align", "label": "Title alignment", "default": "center",
-        "options":[ { "value":"left","label":"Left" }, { "value":"center","label":"Center" }, { "value":"right","label":"Right" } ] },
-      { "type": "color", "id": "title_color", "label": "Title color", "default": "#111111" },
-      { "type": "text", "id": "subtitle", "label": "Subtitle (optional)"},
-      { "type": "color", "id": "subtitle_color", "label": "Subtitle color", "default": "#6b7280" },
-      { "type": "range", "id": "title_size", "label": "Title size (px)", "min": 14, "max": 40, "step": 1, "default": 20 },
+{
+  "name": "Collection List To",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Section title", "default": "Popular Categories" },
+    {
+      "type": "select",
+      "id": "title_align",
+      "label": "Title alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#111111" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle (optional)" },
+    { "type": "color", "id": "subtitle_color", "label": "Subtitle color", "default": "#6b7280" },
+    { "type": "range", "id": "title_size", "label": "Title size (px)", "min": 14, "max": 40, "step": 1, "default": 20 },
 
-      { "type": "header", "content": "Layout & Display" },
-      { "type": "range", "id": "cols_desktop", "label": "Collections per row (desktop)", "min": 1, "max": 6, "step": 1, "default": 6 },
-      { "type": "range", "id": "cols_tablet", "label": "Collections per row (tablet)", "min": 1, "max": 4, "step": 1, "default": 4 },
-      { "type": "range", "id": "cols_mobile", "label": "Collections per row (mobile)", "min": 1, "max": 3, "step": 1, "default": 2 },
-      { "type": "range", "id": "image_size", "label": "Image size (px)", "min": 48, "max": 220, "step": 4, "default": 108 },
+    { "type": "header", "content": "Layout & Display" },
+    {
+      "type": "range",
+      "id": "cols_desktop",
+      "label": "Collections per row (desktop)",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "cols_tablet",
+      "label": "Collections per row (tablet)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "cols_mobile",
+      "label": "Collections per row (mobile)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "label": "Image size (px)",
+      "min": 48,
+      "max": 220,
+      "step": 4,
+      "default": 108
+    },
 
-      { "type": "header", "content": "Slider Settings" },
-      { "type": "checkbox", "id": "enable_swiper_desktop", "label": "Enable slider on desktop", "default": false },
-      { "type": "checkbox", "id": "enable_swiper_mobile", "label": "Enable slider on mobile", "default": true },
-      { "type": "checkbox", "id": "show_arrows", "label": "Show arrows", "default": true },
-      { "type": "checkbox", "id": "show_dots", "label": "Show pagination dots", "default": true },
-      { "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": false },
-      { "type": "range", "id": "autoplay_speed", "label": "Autoplay speed (ms)", "min": 1000, "max": 8000, "step": 250, "default": 3000 },
-      { "type": "checkbox", "id": "loop", "label": "Infinite loop", "default": false },
+    { "type": "header", "content": "Slider Settings" },
+    { "type": "checkbox", "id": "enable_swiper_desktop", "label": "Enable slider on desktop", "default": false },
+    { "type": "checkbox", "id": "enable_swiper_mobile", "label": "Enable slider on mobile", "default": true },
+    { "type": "checkbox", "id": "show_arrows", "label": "Show arrows", "default": true },
+    { "type": "checkbox", "id": "show_dots", "label": "Show pagination dots", "default": true },
+    { "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": false },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed (ms)",
+      "min": 1000,
+      "max": 8000,
+      "step": 250,
+      "default": 3000
+    },
+    { "type": "checkbox", "id": "loop", "label": "Infinite loop", "default": false },
 
-      { "type": "header", "content": "Card & Visual" },
-      { "type": "range", "id": "gap", "label": "Gap between items (px)", "min": 4, "max": 60, "step": 2, "default": 24 },
-      { "type": "checkbox", "id": "hover_zoom", "label": "Hover zoom/lift effect", "default": true },
-      { "type": "checkbox", "id": "card_shadow", "label": "Card shadow (soft)", "default": true },
-      { "type": "color", "id": "background_color", "label": "Section background", "default": "#ffffff" },
+    { "type": "header", "content": "Card & Visual" },
+    { "type": "range", "id": "gap", "label": "Gap between items (px)", "min": 4, "max": 60, "step": 2, "default": 24 },
+    { "type": "checkbox", "id": "hover_zoom", "label": "Hover zoom/lift effect", "default": true },
+    { "type": "checkbox", "id": "card_shadow", "label": "Card shadow (soft)", "default": true },
+    { "type": "color", "id": "background_color", "label": "Section background", "default": "#ffffff" },
 
-      { "type": "header", "content": "Text & Count" },
-      { "type": "checkbox", "id": "show_collection_title", "label": "Show collection title", "default": true },
-      { "type": "range", "id": "collection_title_size", "label": "Collection title size (px)", "min": 10, "max": 18, "step": 1, "default": 13 },
-      { "type": "color", "id": "collection_title_color", "label": "Collection title color", "default": "#111111" },
-      { "type": "checkbox", "id": "show_product_count", "label": "Show product count", "default": true },
-      { "type": "color", "id": "collection_count_color", "label": "Product count color", "default": "#6b7280" },
-      { "type": "select", "id": "text_align", "label": "Text alignment", "default": "center",
-        "options":[ { "value":"left","label":"Left" }, { "value":"center","label":"Center" }, { "value":"right","label":"Right" } ] },
+    { "type": "header", "content": "Text & Count" },
+    { "type": "checkbox", "id": "show_collection_title", "label": "Show collection title", "default": true },
+    {
+      "type": "range",
+      "id": "collection_title_size",
+      "label": "Collection title size (px)",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "default": 13
+    },
+    { "type": "color", "id": "collection_title_color", "label": "Collection title color", "default": "#111111" },
+    { "type": "checkbox", "id": "show_product_count", "label": "Show product count", "default": true },
+    { "type": "color", "id": "collection_count_color", "label": "Product count color", "default": "#6b7280" },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
 
-      { "type": "header", "content": "Spacing & Size" },
-      { "type": "range", "id": "padding_top", "label": "Padding top (px)", "min": 0, "max": 160, "step": 4, "default": 24 },
-      { "type": "range", "id": "padding_bottom", "label": "Padding bottom (px)", "min": 0, "max": 160, "step": 4, "default": 24 },
-      { "type": "range", "id": "margin_top", "label": "Margin top (px)", "min": 0, "max": 160, "step": 4, "default": 0 },
-      { "type": "range", "id": "margin_bottom", "label": "Margin bottom (px)", "min": 0, "max": 160, "step": 4, "default": 0 },
-      { "type": "range", "id": "max_width", "label": "Max container width (px)", "min": 720, "max": 2000, "step": 20, "default": 1200 },
+    { "type": "header", "content": "Spacing & Size" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top (px)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom (px)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 24
+    },
+    { "type": "range", "id": "margin_top", "label": "Margin top (px)", "min": 0, "max": 160, "step": 4, "default": 0 },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Margin bottom (px)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max container width (px)",
+      "min": 720,
+      "max": 2000,
+      "step": 20,
+      "default": 1200
+    },
 
-      { "type": "header", "content": "Animations" },
-      { "type": "select", "id": "animation", "label": "Entrance animation", "default": "fade",
-        "options":[ { "value":"fade","label":"Fade in" }, { "value":"slide","label":"Slide up" }, { "value":"zoom","label":"Zoom in" }, { "value":"none","label":"None" } ] },
+    { "type": "header", "content": "Animations" },
+    {
+      "type": "select",
+      "id": "animation",
+      "label": "Entrance animation",
+      "default": "fade",
+      "options": [
+        { "value": "fade", "label": "Fade in" },
+        { "value": "slide", "label": "Slide up" },
+        { "value": "zoom", "label": "Zoom in" },
+        { "value": "none", "label": "None" }
+      ]
+    },
 
-      { "type": "header", "content": "Advanced" },
-      { "type": "text", "id": "custom_css_class", "label": "Custom CSS class"},
-      { "type": "textarea", "id": "custom_css", "label": "Custom CSS"}
-    ],
-    "blocks": [
-      {
-        "type": "collection_block",
-        "name": "Collection block",
-        "settings": [
-          { "type": "collection", "id": "collection", "label": "Collection" },
-          { "type": "image_picker", "id": "image", "label": "Collection image (overrides collection image)" },
-          { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "rgba(255,255,255,0.0)" },
-          { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity (%)", "min": 0, "max": 100, "step": 5, "default": 0 }
-        ]
-      }
-    ],
-    "presets": [
-      {
-        "name": "Collection list (slider toggle)",
-        "category": "Collections",
-        "blocks": [
-          { "type": "collection_block" },
-          { "type": "collection_block" },
-          { "type": "collection_block" },
-          { "type": "collection_block" },
-          { "type": "collection_block" }
-        ]
-      }
-    ]
-  }
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "custom_css_class", "label": "Custom CSS class" },
+    { "type": "textarea", "id": "custom_css", "label": "Custom CSS" }
+  ],
+  "blocks": [
+    {
+      "type": "collection_block",
+      "name": "Collection block",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Collection image (overrides collection image)" },
+        { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "rgba(255,255,255,0.0)" },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "Overlay opacity (%)",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 0
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection list (slider toggle)",
+      "category": "Collections",
+      "blocks": [
+        { "type": "collection_block" },
+        { "type": "collection_block" },
+        { "type": "collection_block" },
+        { "type": "collection_block" },
+        { "type": "collection_block" }
+      ]
+    }
+  ]
+}
   {% endschema %}
 </section>
