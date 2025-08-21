@@ -328,13 +328,15 @@
 
       // react to resize / breakpoint changes
       function refresh() {
-        applyGridCentering();
-        if (shouldUseSwiper()) {
-          initSwiper();
-        } else {
-          destroySwiper();
-        }
-      }
+  // always reset first
+  destroySwiper();
+
+  if (shouldUseSwiper()) {
+    initSwiper();
+  } else {
+    applyGridCentering(); // handles non-slider layout
+  }
+}
 
       // initial run
       refresh();
