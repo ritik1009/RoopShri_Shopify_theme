@@ -344,6 +344,18 @@
   /** Listeners */
   breakpoint.addEventListener ? breakpoint.addEventListener('change', refresh) : breakpoint.addListener(refresh);
   window.addEventListener('resize', () => { setTimeout(refresh, 150); }, { passive: true });
+  function observe() {
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -5% 0px', threshold: 0.12 });
+    root.querySelectorAll('.anim:not(.is-in)').forEach(el => io.observe(el));
+  }
+  observe();
 
 })();
 </script>
