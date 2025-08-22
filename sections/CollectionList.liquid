@@ -278,7 +278,7 @@
           l.href = 'https://unpkg.com/swiper/swiper-bundle.min.css';
           document.head.appendChild(l);
         }
-        loadScript('https://unpkg.com/swiper/swiper-bundle.min.js', createSwiper);
+        {% comment %} loadScript('https://unpkg.com/swiper/swiper-bundle.min.js', createSwiper); {% endcomment %}
 
     swiperInstance = new Swiper(container, {
       slidesPerView: colsMobile,
