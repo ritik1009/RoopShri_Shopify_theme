@@ -338,6 +338,7 @@
     }
   }
   function observe() {
+    console.log("Inside observer")
     const io = new IntersectionObserver((entries, obs) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
