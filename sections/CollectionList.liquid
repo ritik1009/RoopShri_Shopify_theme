@@ -337,14 +337,6 @@
       applyGridCentering();
     }
   }
-
-  /** Initial run */
-  refresh();
-
-  /** Listeners */
-  breakpoint.addEventListener ? breakpoint.addEventListener('change', refresh) : breakpoint.addListener(refresh);
-  window.addEventListener('resize', () => { setTimeout(refresh, 150); }, { passive: true });
-  
   function observe() {
     const io = new IntersectionObserver((entries, obs) => {
       entries.forEach(e => {
@@ -357,6 +349,14 @@
     root.querySelectorAll('.anim:not(.is-in)').forEach(el => io.observe(el));
   }
   observe();
+  /** Initial run */
+  refresh();
+
+  /** Listeners */
+  breakpoint.addEventListener ? breakpoint.addEventListener('change', refresh) : breakpoint.addListener(refresh);
+  window.addEventListener('resize', () => { setTimeout(refresh, 150); }, { passive: true });
+
+  
 
 })();
 </script>
