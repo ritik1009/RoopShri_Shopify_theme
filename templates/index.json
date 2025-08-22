@@ -342,7 +342,7 @@
           "settings": {
             "collection": "bangles",
             "image": "shopify://shop_images/product-1-4.webp",
-            "overlay_color": "rgba(255,255,255,0.0)",
+            "overlay_color": "rgba(0,0,0,0)",
             "overlay_opacity": 0
           }
         },
@@ -351,7 +351,7 @@
           "settings": {
             "collection": "bangles",
             "image": "shopify://shop_images/product-1-2.webp",
-            "overlay_color": "rgba(255,255,255,0.0)",
+            "overlay_color": "rgba(0,0,0,0)",
             "overlay_opacity": 0
           }
         },
@@ -359,7 +359,7 @@
           "type": "collection_block",
           "settings": {
             "collection": "jewelry-sets",
-            "overlay_color": "rgba(255,255,255,0.0)",
+            "overlay_color": "rgba(0,0,0,0)",
             "overlay_opacity": 0
           }
         },
@@ -367,7 +367,7 @@
           "type": "collection_block",
           "settings": {
             "collection": "rings",
-            "overlay_color": "rgba(255,255,255,0.0)",
+            "overlay_color": "rgba(0,0,0,0)",
             "overlay_opacity": 0
           }
         }
@@ -392,8 +392,8 @@
         "image_size": 144,
         "enable_swiper_desktop": false,
         "enable_swiper_mobile": true,
-        "show_arrows": true,
-        "show_dots": true,
+        "show_arrows": false,
+        "show_dots": false,
         "autoplay": false,
         "autoplay_speed": 3000,
         "loop": false,
@@ -412,7 +412,7 @@
         "margin_top": 0,
         "margin_bottom": 0,
         "max_width": 1200,
-        "animation": "slide",
+        "animation": "none",
         "custom_css_class": "",
         "custom_css": ""
       }
