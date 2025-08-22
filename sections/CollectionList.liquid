@@ -261,6 +261,7 @@
   function initSwiper() {
     const container = root.querySelector('.cl-list');
     const wrapper = container.querySelector('.cl-grid');
+    console.log("The Wrapper",wrapp)
 
     // Add Swiper classes
     container.classList.add('swiper');
@@ -330,7 +331,7 @@
   /** Refresh function on resize / breakpoint */
   function refresh() {
     destroySwiper();
-
+    observe();
     if (shouldUseSwiper()) {
       initSwiper();
     } else {
@@ -349,7 +350,7 @@
     }, { rootMargin: '0px 0px -5% 0px', threshold: 0.12 });
     root.querySelectorAll('.anim:not(.is-in)').forEach(el => io.observe(el));
   }
-  observe();
+  
   /** Initial run */
   refresh();
 
